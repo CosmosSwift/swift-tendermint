@@ -38,7 +38,7 @@ extension RESTClient {
         return self.sendRequest(payload: payload)
     }
     
-    private func abciQueryMapToData<ParameterPayload, ResponsePayload>(id: Int, parameters: RESTABCIQueryParameters<ParameterPayload>) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<ResponsePayload>>> {
+    public func abciQueryMapToData<ParameterPayload, ResponsePayload>(id: Int, parameters: RESTABCIQueryParameters<ParameterPayload>) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<ResponsePayload>>> {
         let dataParameters: RESTABCIQueryParameters<Data>
         do {
             dataParameters = try parameters.mapPayload { (payload) throws -> Data in
@@ -63,6 +63,7 @@ extension RESTClient {
         }
     }
     
+    #warning("Where should this live?")
     /*public func abciQuery(id: Int, parameters: ABCIQueryParameters<GetAccountPayload>) -> EventLoopFuture<RESTResponse<ABCIQueryResponse2<Account>>> {
         return abciQueryMapToData(id: id, parameters: parameters)
     }*/
