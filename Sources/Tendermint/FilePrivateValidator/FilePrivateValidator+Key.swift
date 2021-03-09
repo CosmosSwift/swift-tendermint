@@ -5,7 +5,7 @@ public struct FilePrivateValidatorKey: Codable {
     // TODO: The key below should be an abstract PrivateKey
     // Using PrivateKey as an "abstract" class did not work
     // We should think about what to do later (see P2P/P2P+Key.swift)
-    public let publicKey: PublicKey
+    public let publicKey: PublicKeyProtocol
     public let privateKey: PrivateKey
     
     private enum CodingKeys: String, CodingKey {
@@ -19,7 +19,7 @@ public struct FilePrivateValidatorKey: Codable {
         self.address = try container.decode(Address.self, forKey: .address)
         let publicKeyCodable = try container.decode(AnyProtocolCodable.self, forKey: .publicKey)
 
-        guard let publicKey = publicKeyCodable.value as? PublicKey else {
+        guard let publicKey = publicKeyCodable.value as? PublicKeyProtocol else {
             throw DecodingError.dataCorruptedError(
                 forKey: .publicKey,
                 in: container,

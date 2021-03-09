@@ -23,11 +23,11 @@ public struct ABCIQueryResponse<Payload: Codable>: Codable {
 public struct BlockResponse: Codable {
     enum CodingKeys: String, CodingKey {
         case blockID = "block_id"
-        case block = "block"
+        case block
     }
     
-    let blockID: Never //types.BlockID
-    let block: Never //*types.Block
+    let blockID: Block.BlockID
+    let block: Block
 }
 
 public struct BlockchainInfoResponse: Codable {
@@ -37,12 +37,12 @@ public struct BlockchainInfoResponse: Codable {
     }
     
     let lastHeight: Int64
-    let blockMetas: Never // []*types.BlockMeta
+    let blockMetas: [BlockMeta]
 }
 
 public struct BlockResultsResponse: Codable {
     enum CodingKeys: String, CodingKey {
-        case height = "height"
+        case height
         case transactionResults = "txs_results"
         case beginBlockEvents = "begin_block_events"
         case endBlockEvents = "end_block_events"
@@ -74,8 +74,8 @@ public struct BroadcastTransactionCommitResponse: Codable {
     enum CodingKeys: String, CodingKey {
         case checkTransaction = "check_tx"
         case deliverTransaction = "deliver_tx"
-        case hash = "hash"
-        case height = "height"
+        case hash
+        case height
     }
     
     let checkTransaction: Never //abci.ResponseCheckTx
@@ -114,7 +114,7 @@ public struct ConsensusParametersResponse: Codable {
     }
     
     let blockHeight: Int64
-    let consensusParameters: Never //types.ConsensusParams
+    let consensusParameters: ConsensusParameters //types.ConsensusParams
 }
 
 public struct ConsensusStateResponse: Codable {
@@ -128,7 +128,7 @@ public struct ConsensusStateResponse: Codable {
 public struct DumpConsensusStateResponse: Codable {
     enum CodingKeys: String, CodingKey {
         case roundState = "round_state"
-        case peers = "peers"
+        case peers
     }
     
     let roundState: Never // json.RawMessage
@@ -145,18 +145,18 @@ public struct DumpConsensusStateResponse: Codable {
     }
 }
 
-public struct GenesisResponse: Codable {
-    let genesis: Never // types.GenesisDoc
+public struct GenesisResponse<AppState: Codable>: Codable {
+    let genesis: GenesisDocument<AppState> // types.GenesisDoc
 }
 
 public struct HealthResponse: Codable { /* Empty on purpose */ }
 
 public struct NetInfoResponse: Codable {
     enum CodingKeys: String, CodingKey {
-        case listening = "listening"
-        case listeners = "listeners"
+        case listening
+        case listeners
         case numberOfPeers = "n_peers"
-        case peers = "peers"
+        case peers
     }
     
     let listening: Bool
@@ -180,7 +180,7 @@ public struct NetInfoResponse: Codable {
 }
 
 // Node Status
-public struct StatusResponse: Codable {
+public struct StatusResponse<PublicKey: PublicKeyProtocol>: Codable {
     enum CodingKeys: String, CodingKey {
         case nodeInfo = "node_info"
         case syncInfo = "sync_info"
@@ -189,7 +189,7 @@ public struct StatusResponse: Codable {
     
     let nodeInfo: Never // p2p.NodeInfo
     let syncInfo: SyncInfo
-    let validatorInfo: ValidatorInfo
+    let validatorInfo: ValidatorInfo<PublicKey>
     
     // Info about the node's syncing state
     public struct SyncInfo: Codable {
@@ -221,15 +221,15 @@ public struct StatusResponse: Codable {
     }
     
     // Info about the node's validator
-    public struct ValidatorInfo: Codable {
+    public struct ValidatorInfo<PublicKey: PublicKeyProtocol>: Codable {
         enum CodingKeys: String, CodingKey {
-            case address = "address"
+            case address
             case pubKey = "pub_key"
             case votingPower = "voting_power"
         }
         
         let address: Data // bytes.HexBytes
-        let pubKey: Never // crypto.PubKey
+        let pubKey: PublicKey // crypto.PubKey
         let votingPower: Int64
     }
 }
@@ -238,12 +238,12 @@ public struct SubscribeResponse: Codable { /* Empty on purpose */ }
 
 public struct TransactionResponse: Codable {
     enum CodingKeys: String, CodingKey {
-        case hash = "hash"
-        case height = "height"
-        case index = "index"
+        case hash
+        case height
+        case index
         case transactionResult = "tx_result"
         case transaction = "tx"
-        case proof = "proof"
+        case proof
     }
     
     let hash: Data // bytes.HexBytes
@@ -267,7 +267,7 @@ public struct TransactionSearchResponse: Codable {
 public struct UnconfirmedTransactionsResponse: Codable {
     enum CodingKeys: String, CodingKey {
         case count = "n_txs"
-        case total = "total"
+        case total
         case totalBytes = "total_bytes"
         case transactions = "txs"
     }
@@ -280,16 +280,16 @@ public struct UnconfirmedTransactionsResponse: Codable {
 
 public struct UnsubscribeResponse: Codable { /* Empty on purpose */ }
 
-public struct ValidatorsResponse: Codable {
+public struct ValidatorsResponse<PublicKey: PublicKeyProtocol>: Codable {
     enum CodingKeys: String, CodingKey {
         case blockHeight = "block_height"
-        case validators = "validators"
-        case count = "count"
-        case total = "total"
+        case validators
+        case count
+        case total
     }
     
     let blockHeight: Int64
-    let validators: Never //[]*types.Validator
+    let validators: [Validator<PublicKey>]
     let count: Int
     let total: Int
 }

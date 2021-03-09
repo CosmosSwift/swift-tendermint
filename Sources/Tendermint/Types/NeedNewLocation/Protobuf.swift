@@ -3,7 +3,7 @@ import ABCIMessages
 extension ABCIMessages.PublicKey {
     // XXX: panics on nil or unknown pubkey type
     // TODO: add cases when new pubkey types are added to crypto
-    public init(_ publicKey: PublicKey) {
+    public init(_ publicKey: PublicKeyProtocol) {
         switch publicKey {
         case is Ed25519PublicKey:
             self = .ed25519(publicKey.data)

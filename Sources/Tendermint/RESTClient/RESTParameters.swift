@@ -102,10 +102,10 @@ public struct RESTTransactionParameters: Codable {
 
 public struct RESTTransactionSearchParameters: Codable {
     enum CodingKeys: String, CodingKey {
-        case query = "query"
-        case prove = "prove"
-        case page = "page"
-        case perPage = "perPage"
+        case query
+        case prove
+        case page
+        case perPage
         case orderBy = "order_by"
     }
     
@@ -126,8 +126,8 @@ public struct RESTUnsubscribeParameters: Codable {
 
 public struct RESTValidatorsParameters: Codable {
     enum CodingKeys: String, CodingKey {
-        case height = "height"
-        case page = "page"
+        case height
+        case page
         case perPage = "per_page"
     }
     

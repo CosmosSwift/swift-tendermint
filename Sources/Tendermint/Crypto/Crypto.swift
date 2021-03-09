@@ -12,22 +12,22 @@ public enum Crypto {
     }
 }
 
-public protocol PublicKey: ProtocolCodable {
+public protocol PublicKeyProtocol: ProtocolCodable {
     var address: Address { get }
     var data: Data { get }
     func verify(message: Data, signature: Data) -> Bool
-    func equals(publicKey: PublicKey) -> Bool
+    func equals(publicKey: PublicKeyProtocol) -> Bool
 }
 
-public extension PublicKey {
-    func equals(publicKey: PublicKey) -> Bool {
+public extension PublicKeyProtocol {
+    func equals(publicKey: PublicKeyProtocol) -> Bool {
         self.data == publicKey.data
     }
 }
 
 public protocol PrivateKey: ProtocolCodable {
     var data: Data { get }
-    var publicKey: PublicKey { get}
+    var publicKey: PublicKeyProtocol { get}
     func sign(message: Data) throws -> Data
     func equals(privateKey: PrivateKey) -> Bool
 }

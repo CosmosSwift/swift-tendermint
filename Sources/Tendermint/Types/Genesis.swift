@@ -9,7 +9,7 @@ import Foundation
 // GenesisValidator is an initial validator.
 public struct GenesisValidator: Codable {
     var address: Address
-    let publicKey: PublicKey // TODO: should be an abstract PublicKey, but need to work out how to make it codable
+    let publicKey: PublicKeyProtocol // TODO: should be an abstract PublicKey, but need to work out how to make it codable
     let power: Int64
     let name: String
     
@@ -20,7 +20,7 @@ public struct GenesisValidator: Codable {
         case name
     }
     
-    public init(address: Address, publicKey: PublicKey, power: Int64, name: String) {
+    public init(address: Address, publicKey: PublicKeyProtocol, power: Int64, name: String) {
         self.address = address
         self.publicKey = publicKey
         self.power = power
@@ -31,7 +31,7 @@ public struct GenesisValidator: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let address = try container.decode(HexadecimalData.self, forKey: .address)
         let publicKeyCodable = try container.decode(AnyProtocolCodable.self, forKey: .publicKey)
-        guard let publicKey = publicKeyCodable.value as? PublicKey else {
+        guard let publicKey = publicKeyCodable.value as? PublicKeyProtocol else {
             throw DecodingError.dataCorruptedError(
                 forKey: .publicKey,
                 in: container,

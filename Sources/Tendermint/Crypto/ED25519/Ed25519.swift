@@ -40,7 +40,7 @@ public struct Ed25519PrivateKey: PrivateKey {
         try key.signature(for: message)
     }
     
-    public var publicKey: PublicKey {
+    public var publicKey: PublicKeyProtocol {
         Ed25519PublicKey(key: key.publicKey)
     }
 }
@@ -54,7 +54,7 @@ extension Ed25519PrivateKey {
     }
 }
 
-public struct Ed25519PublicKey: PublicKey {
+public struct Ed25519PublicKey: PublicKeyProtocol {
     public static var metaType: MetaType = Self.metaType(
         key: "tendermint/PubKeyEd25519"
     )

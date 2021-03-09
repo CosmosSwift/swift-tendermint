@@ -49,7 +49,7 @@ extension NodeKey {
     
     // PubKeyToID returns the ID corresponding to the given PubKey.
     // It's the hex-encoding of the pubKey.Address().
-    static func id(from publicKey: PublicKey) -> ID {
+    static func id(from publicKey: PublicKeyProtocol) -> ID {
         publicKey.address.rawValue.hexEncodedString()
     }
 }

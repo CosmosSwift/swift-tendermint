@@ -133,9 +133,9 @@ extension RESTClient {
         let payload = RESTRequest(id: id, method: .dumpConsensusState, params: RESTDumpConsensusStateParameters())
         return self.sendRequest(payload: payload)
     }
-
-    public func genesis(id: Int) -> EventLoopFuture<RESTResponse<GenesisResponse>> {
-        struct RESTGenesisParameters: Codable { }
+    
+    private struct RESTGenesisParameters: Codable { }
+    public func genesis<AppState>(id: Int) -> EventLoopFuture<RESTResponse<GenesisResponse<AppState>>> {
         let payload = RESTRequest(id: id, method: .genesis, params: RESTGenesisParameters())
         return self.sendRequest(payload: payload)
     }
@@ -158,8 +158,8 @@ extension RESTClient {
         return self.sendRequest(payload: payload)
     }
 
-    public func status(id: Int) -> EventLoopFuture<RESTResponse<StatusResponse>> {
-        struct RESTStatusParameters: Codable { }
+    private struct RESTStatusParameters: Codable { }
+    public func status<PublicKey: PublicKeyProtocol>(id: Int) -> EventLoopFuture<RESTResponse<StatusResponse<PublicKey>>> {
         let payload = RESTRequest(id: id, method: .status, params: RESTStatusParameters())
         return self.sendRequest(payload: payload)
     }
@@ -195,7 +195,7 @@ extension RESTClient {
         return self.sendRequest(payload: payload)
     }
 
-    public func validators(id: Int, params: RESTValidatorsParameters) -> EventLoopFuture<RESTResponse<ValidatorsResponse>> {
+    public func validators<PublicKey: PublicKeyProtocol>(id: Int, params: RESTValidatorsParameters) -> EventLoopFuture<RESTResponse<ValidatorsResponse<PublicKey>>> {
         let payload = RESTRequest(id: id, method: .validators, params: params)
         return self.sendRequest(payload: payload)
     }
