@@ -8,7 +8,7 @@
 import Foundation
 import ABCIMessages
 
-public struct ABCIQueryParameters<Payload: Codable>: Codable {
+public struct RESTABCIQueryParameters<Payload: Codable>: Codable {
     let path: String
     let data: Payload // bytes.HexBytes
     let height: Int64?
@@ -35,43 +35,33 @@ public struct ABCIQueryParameters<Payload: Codable>: Codable {
         self.prove = prove
     }
     
-    internal func mapPayload<T: Codable>(_ f: (Payload) throws -> T) rethrows -> ABCIQueryParameters<T> {
-        return ABCIQueryParameters<T>(path: path, data: try f(data), height: height, prove: prove)
+    internal func mapPayload<T: Codable>(_ f: (Payload) throws -> T) rethrows -> RESTABCIQueryParameters<T> {
+        return RESTABCIQueryParameters<T>(path: path, data: try f(data), height: height, prove: prove)
     }
 }
 
-public struct BlockParameters: Codable {
+public struct RESTBlockParameters: Codable {
     let height: Int64?
 }
 
-public struct BlockByHashParameters: Codable {
+public struct RESTBlockByHashParameters: Codable {
     let hash: Data
 }
 
-public struct BlockchainInfoParameters: Codable {
+public struct RESTBlockchainInfoParameters: Codable {
     let minHeight: Int64
     let maxHeight: Int64
 }
 
-public struct BlockResultsParameters: Codable {
+public struct RESTBlockResultsParameters: Codable {
     let height: Int64?
 }
 
-public protocol EvidenceProtocol: Codable {
-    func abci() -> ABCIMessages.Evidence
-    func data() -> Data
-    func hash() -> Data
-    func height() -> Int64
-    func string() -> String
-    func time() -> Date
-    func validateBasic() -> Error
-}
-
-public struct BroadcastEvidenceParameters<Evidence: EvidenceProtocol>: Codable {
+public struct RESTBroadcastEvidenceParameters<Evidence: EvidenceProtocol>: Codable {
     let evidence: Evidence // types.Evidence
 }
 
-public struct BroadcastTransactionParameters: Codable {
+public struct RESTBroadcastTransactionParameters: Codable {
     enum CodingKeys: String, CodingKey {
         case transaction = "tx"
     }
@@ -79,38 +69,38 @@ public struct BroadcastTransactionParameters: Codable {
     let transaction: Never // types.Tx
 }
 
-public struct BroadcastTransactionCommitParameters: Codable {
+public struct RESTBroadcastTransactionCommitParameters: Codable {
     enum CodingKeys: String, CodingKey {
         case transaction = "tx"
     }
     let transaction: Never // types.Tx
 }
 
-public struct CheckTransactionParameters: Codable {
+public struct RESTCheckTransactionParameters: Codable {
     enum CodingKeys: String, CodingKey {
         case transaction = "tx"
     }
     let transaction: Never // types.Tx
 }
 
-public struct CommitParameters: Codable {
+public struct RESTCommitParameters: Codable {
     let height: Int64?
 }
 
-public struct ConsensusParametersParameters: Codable {
+public struct RESTConsensusParametersParameters: Codable {
     let height: Int?
 }
 
-public struct SubscribeParameters: Codable {
+public struct RESTSubscribeParameters: Codable {
     let query: String
 }
 
-public struct TransactionParameters: Codable {
+public struct RESTTransactionParameters: Codable {
     let hash: Data
     let prove: Bool
 }
 
-public struct TransactionSearchParameters: Codable {
+public struct RESTTransactionSearchParameters: Codable {
     enum CodingKeys: String, CodingKey {
         case query = "query"
         case prove = "prove"
@@ -126,15 +116,15 @@ public struct TransactionSearchParameters: Codable {
     let orderBy: String
 }
 
-public struct UnconfirmedTransactionsParameters: Codable {
+public struct RESTUnconfirmedTransactionsParameters: Codable {
     let limit: Int?
 }
 
-public struct UnsubscribeParameters: Codable {
+public struct RESTUnsubscribeParameters: Codable {
     let query: String
 }
 
-public struct ValidatorsParameters: Codable {
+public struct RESTValidatorsParameters: Codable {
     enum CodingKeys: String, CodingKey {
         case height = "height"
         case page = "page"

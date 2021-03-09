@@ -19,6 +19,7 @@ public struct GenesisValidator: Codable {
         case power
         case name
     }
+    
     public init(address: Address, publicKey: PublicKey, power: Int64, name: String) {
         self.address = address
         self.publicKey = publicKey
@@ -83,6 +84,7 @@ public struct GenesisDocument<AppState: Codable>: Codable {
     
     let genesisTime: Date
     public var chainID: String
+    let initialHeight: Int64
     var consensusParameters: ConsensusParameters?
     public var validators: [GenesisValidator]?
     let appHash: Data
@@ -91,6 +93,7 @@ public struct GenesisDocument<AppState: Codable>: Codable {
     private enum CodingKeys: String, CodingKey {
         case genesisTime = "genesis_time"
         case chainID = "chain_id"
+        case initialHeight = "initial_height"
         case consensusParameters = "consensus_params"
         case validators
         case appHash = "app_hash"
