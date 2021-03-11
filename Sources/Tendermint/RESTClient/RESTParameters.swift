@@ -61,26 +61,17 @@ public struct RESTBroadcastEvidenceParameters<Evidence: EvidenceProtocol>: Codab
     let evidence: Evidence // types.Evidence
 }
 
+
 public struct RESTBroadcastTransactionParameters: Codable {
     enum CodingKeys: String, CodingKey {
         case transaction = "tx"
     }
     
-    let transaction: Never // types.Tx
-}
-
-public struct RESTBroadcastTransactionCommitParameters: Codable {
-    enum CodingKeys: String, CodingKey {
-        case transaction = "tx"
+    let transaction: TransactionBytes // types.Tx
+    
+    var hash: Data {
+        Hash.sum(data: transaction.data)
     }
-    let transaction: Never // types.Tx
-}
-
-public struct RESTCheckTransactionParameters: Codable {
-    enum CodingKeys: String, CodingKey {
-        case transaction = "tx"
-    }
-    let transaction: Never // types.Tx
 }
 
 public struct RESTCommitParameters: Codable {

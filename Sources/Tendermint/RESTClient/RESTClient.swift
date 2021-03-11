@@ -24,21 +24,29 @@ public struct RESTClient {
     
     public static let jsonRpcVersion = "2.0"
     public static let httpClientType = "Swift ABCI Http client"
+    
+    private static var _id: Int = 0
+    
+    public static var nextId: Int {
+        #warning("This is not thread safe.")
+        self._id = self._id + 1
+        return _id
+    }
 }
 
 extension RESTClient {
-    public func abciInfo(id: Int) -> EventLoopFuture<RESTResponse<ABCIInfoResponse>> {
+    public func abciInfo(id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIInfoResponse>> {
         struct RESTABCIInfoParameters: Codable { }
         let payload = RESTRequest(id: id, method: .abciInfo, params: RESTABCIInfoParameters())
         return self.sendRequest(payload: payload)
     }
     
-    private func abciQuery(id: Int, parameters: RESTABCIQueryParameters<Data>) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
+    private func abciQuery(parameters: RESTABCIQueryParameters<Data>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
         let payload = RESTRequest(id: id, method: .abciQuery, params: parameters)
         return self.sendRequest(payload: payload)
     }
     
-    public func abciQueryMapToData<ParameterPayload, ResponsePayload>(id: Int, parameters: RESTABCIQueryParameters<ParameterPayload>) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<ResponsePayload>>> {
+    public func abciQueryMapToData<ParameterPayload, ResponsePayload>(parameters: RESTABCIQueryParameters<ParameterPayload>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<ResponsePayload>>> {
         let dataParameters: RESTABCIQueryParameters<Data>
         do {
             dataParameters = try parameters.mapPayload { (payload) throws -> Data in
@@ -48,7 +56,7 @@ extension RESTClient {
         } catch {
             return client.eventLoopGroup.next().makeFailedFuture(error)
         }
-        return abciQuery(id: id, parameters: dataParameters).flatMap { response in
+        return abciQuery(parameters: dataParameters, id: id).flatMap { response in
             do {
                 let decodedResponse = try response.map { queryResponse in
                     try queryResponse.map { data -> ResponsePayload in
@@ -64,139 +72,139 @@ extension RESTClient {
     }
     
     #warning("Where should this live?")
-    /*public func abciQuery(id: Int, parameters: ABCIQueryParameters<GetAccountPayload>) -> EventLoopFuture<RESTResponse<ABCIQueryResponse2<Account>>> {
+    /*public func abciQuery(parameters: ABCIQueryParameters<GetAccountPayload>) -> EventLoopFuture<RESTResponse<ABCIQueryResponse2<Account>>> {
         return abciQueryMapToData(id: id, parameters: parameters)
     }*/
     
-    public func block(id: Int, params: RESTBlockParameters) -> EventLoopFuture<RESTResponse<BlockResponse>> {
+    public func block(params: RESTBlockParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BlockResponse>> {
         let payload = RESTRequest(id: id, method: .block, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func blockByHash(id: Int, params: RESTBlockByHashParameters) -> EventLoopFuture<RESTResponse<BlockResponse>> {
+    public func blockByHash(params: RESTBlockByHashParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BlockResponse>> {
         let payload = RESTRequest(id: id, method: .blockByHash, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func blockchainInfo(id: Int, params: RESTBlockchainInfoParameters) -> EventLoopFuture<RESTResponse<BlockchainInfoResponse>> {
+    public func blockchainInfo(params: RESTBlockchainInfoParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BlockchainInfoResponse>> {
         let payload = RESTRequest(id: id, method: .blockchain, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func blockResults(id: Int, params: RESTBlockResultsParameters) -> EventLoopFuture<RESTResponse<BlockResultsResponse>> {
+    public func blockResults(params: RESTBlockResultsParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BlockResultsResponse>> {
         let payload = RESTRequest(id: id, method: .blockResults, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func broadcastEvidence<Evidence: EvidenceProtocol>(id: Int, params: RESTBroadcastEvidenceParameters<Evidence>) -> EventLoopFuture<RESTResponse<BroadcastEvidenceResponse>> {
+    public func broadcastEvidence<Evidence: EvidenceProtocol>(params: RESTBroadcastEvidenceParameters<Evidence>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BroadcastEvidenceResponse>> {
         let payload = RESTRequest(id: id, method: .broadcastEvidence, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func broadcastTransactionAsync(id: Int, params: RESTBroadcastTransactionParameters) -> EventLoopFuture<RESTResponse<BroadcastTransactionResponse>> {
+    public func broadcastTransactionAsync(params: RESTBroadcastTransactionParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BroadcastTransactionResponse>> {
         let payload = RESTRequest(id: id, method: .broadcastTransactionAsync, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func broadcastTransactionCommit(id: Int, params: RESTBroadcastTransactionCommitParameters) -> EventLoopFuture<RESTResponse<BroadcastTransactionCommitResponse>> {
+    public func broadcastTransactionCommit(params: RESTBroadcastTransactionParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BroadcastTransactionCommitResponse>> {
         let payload = RESTRequest(id: id, method: .broadcastTransactionCommit, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func broadcastTransactionSync(id: Int, params: RESTBroadcastTransactionParameters) -> EventLoopFuture<RESTResponse<BroadcastTransactionResponse>> {
+    public func broadcastTransactionSync(params: RESTBroadcastTransactionParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BroadcastTransactionResponse>> {
         let payload = RESTRequest(id: id, method: .broadcastTransactionSync, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func checkTransaction(id: Int, params: RESTCheckTransactionParameters) -> EventLoopFuture<RESTResponse<CheckTransactionResponse>> {
+    public func checkTransaction(params: RESTBroadcastTransactionParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<CheckTransactionResponse>> {
         let payload = RESTRequest(id: id, method: .checkTransaction, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func commit(id: Int, params: RESTCommitParameters) -> EventLoopFuture<RESTResponse<CommitResponse>> {
+    public func commit(params: RESTCommitParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<CommitResponse>> {
         let payload = RESTRequest(id: id, method: .commit, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func consensusParameters(id: Int, params: RESTConsensusParametersParameters) -> EventLoopFuture<RESTResponse<ConsensusParametersResponse>> {
+    public func consensusParameters(params: RESTConsensusParametersParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ConsensusParametersResponse>> {
         let payload = RESTRequest(id: id, method: .consensusParameters, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func consensusState(id: Int) -> EventLoopFuture<RESTResponse<ConsensusStateResponse>> {
+    public func consensusState(id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ConsensusStateResponse>> {
         struct RESTConsensusStateParameters: Codable { }
         let payload = RESTRequest(id: id, method: .consensusState, params: RESTConsensusStateParameters())
         return self.sendRequest(payload: payload)
     }
 
-    public func dumpConsensusState(id: Int) -> EventLoopFuture<RESTResponse<DumpConsensusStateResponse>> {
+    public func dumpConsensusState(id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<DumpConsensusStateResponse>> {
         struct RESTDumpConsensusStateParameters: Codable { }
         let payload = RESTRequest(id: id, method: .dumpConsensusState, params: RESTDumpConsensusStateParameters())
         return self.sendRequest(payload: payload)
     }
     
     private struct RESTGenesisParameters: Codable { }
-    public func genesis<AppState>(id: Int) -> EventLoopFuture<RESTResponse<GenesisResponse<AppState>>> {
+    public func genesis<AppState>(id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<GenesisResponse<AppState>>> {
         let payload = RESTRequest(id: id, method: .genesis, params: RESTGenesisParameters())
         return self.sendRequest(payload: payload)
     }
 
-    public func health(id: Int) -> EventLoopFuture<RESTResponse<HealthResponse>> {
+    public func health(id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<HealthResponse>> {
         struct RESTHealthParameters: Codable { }
         let payload = RESTRequest(id: id, method: .health, params: RESTHealthParameters())
         return self.sendRequest(payload: payload)
     }
 
-    public func netInfo(id: Int) -> EventLoopFuture<RESTResponse<NetInfoResponse>> {
+    public func netInfo(id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<NetInfoResponse>> {
         struct RESTNetInfoParameters: Codable { }
         let payload = RESTRequest(id: id, method: .netInfo, params: RESTNetInfoParameters())
         return self.sendRequest(payload: payload)
     }
 
-    public func numUnconfirmedTransactions(id: Int) -> EventLoopFuture<RESTResponse<UnconfirmedTransactionsResponse>> {
+    public func numUnconfirmedTransactions(id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<UnconfirmedTransactionsResponse>> {
         struct RESTNumUnconfirmedTransactionsParameters: Codable { }
         let payload = RESTRequest(id: id, method: .numUnconfirmedTransactions, params: RESTNumUnconfirmedTransactionsParameters())
         return self.sendRequest(payload: payload)
     }
 
     private struct RESTStatusParameters: Codable { }
-    public func status<PublicKey: PublicKeyProtocol>(id: Int) -> EventLoopFuture<RESTResponse<StatusResponse<PublicKey>>> {
+    public func status<PublicKey: PublicKeyProtocol>(id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<StatusResponse<PublicKey>>> {
         let payload = RESTRequest(id: id, method: .status, params: RESTStatusParameters())
         return self.sendRequest(payload: payload)
     }
 
-    public func subscribe(id: Int, params: RESTSubscribeParameters) -> EventLoopFuture<RESTResponse<SubscribeResponse>> {
+    public func subscribe(params: RESTSubscribeParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<SubscribeResponse>> {
         let payload = RESTRequest(id: id, method: .subscribe, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func transaction(id: Int, params: RESTTransactionParameters) -> EventLoopFuture<RESTResponse<TransactionResponse>> {
+    public func transaction(params: RESTTransactionParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<TransactionResponse>> {
         let payload = RESTRequest(id: id, method: .transaction, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func transactionSearch(id: Int, params: RESTTransactionSearchParameters) -> EventLoopFuture<RESTResponse<TransactionSearchResponse>> {
+    public func transactionSearch(params: RESTTransactionSearchParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<TransactionSearchResponse>> {
         let payload = RESTRequest(id: id, method: .transactionSearch, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func unconfirmedTransactions(id: Int, params: RESTUnconfirmedTransactionsParameters) -> EventLoopFuture<RESTResponse<UnconfirmedTransactionsResponse>> {
+    public func unconfirmedTransactions(params: RESTUnconfirmedTransactionsParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<UnconfirmedTransactionsResponse>> {
         let payload = RESTRequest(id: id, method: .unconfirmedTransactions, params: params)
         return self.sendRequest(payload: payload)
     }
     
-    public func unsubscribe(id: Int, params: RESTUnsubscribeParameters) -> EventLoopFuture<RESTResponse<UnsubscribeResponse>> {
+    public func unsubscribe(params: RESTUnsubscribeParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<UnsubscribeResponse>> {
         let payload = RESTRequest(id: id, method: .unsubscribe, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func unsubscribeAll(id: Int) -> EventLoopFuture<RESTResponse<UnsubscribeResponse>> {
+    public func unsubscribeAll(id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<UnsubscribeResponse>> {
         struct RESTUnsubscribeAllParameters: Codable { }
         let payload = RESTRequest(id: id, method: .unsubscribeAll, params: RESTUnsubscribeAllParameters())
         return self.sendRequest(payload: payload)
     }
 
-    public func validators<PublicKey: PublicKeyProtocol>(id: Int, params: RESTValidatorsParameters) -> EventLoopFuture<RESTResponse<ValidatorsResponse<PublicKey>>> {
+    public func validators<PublicKey: PublicKeyProtocol>(params: RESTValidatorsParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ValidatorsResponse<PublicKey>>> {
         let payload = RESTRequest(id: id, method: .validators, params: params)
         return self.sendRequest(payload: payload)
     }

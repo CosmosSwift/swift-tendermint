@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+
+public typealias TransactionBytes = Data
+
+extension TransactionBytes {
+    var data: Data {
+        self
+    }
+}
