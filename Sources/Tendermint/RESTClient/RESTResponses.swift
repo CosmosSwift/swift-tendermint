@@ -78,8 +78,8 @@ public struct BroadcastTransactionCommitResponse: Codable {
         case height
     }
     
-    let checkTransaction: Never //abci.ResponseCheckTx
-    let deliverTransaction: Never // abci.ResponseDeliverTx
+    let checkTransaction: ResponseCheckTx
+    let deliverTransaction: ResponseDeliverTx
     let hash: Data // bytes.HexBytes
     let height: Int64
 }
@@ -90,11 +90,7 @@ public struct CheckTransactionResponse: Codable {
 //    type ResultCheckTx struct {
 //        abci.ResponseCheckTx
 //    }
-    let code: UInt32
-    let data: Data // bytes.HexBytes
-    let log: String
-    let codespace: String // TODO: is this necessary?
-    let hash: Data //bytes.HexBytes
+    let checkTransaction: ResponseCheckTx
 }
 
 public struct CommitResponse: Codable {
@@ -255,7 +251,7 @@ public struct TransactionResponse: Codable {
     let height: Int64
     let index: UInt32
     let transactionResult: ResponseDeliverTx
-    let transaction: Never // types.Tx
+    let transaction: TransactionBytes // types.Tx
     let proof: Never // types.TxProof
 }
 
@@ -280,7 +276,7 @@ public struct UnconfirmedTransactionsResponse: Codable {
     let count: Int
     let total: Int
     let totalBytes: Int64
-    let transactions: Never // []types.Tx
+    let transactions: [TransactionBytes] // []types.Tx
 }
 
 public struct UnsubscribeResponse: Codable { /* Empty on purpose */ }
