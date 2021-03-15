@@ -66,7 +66,7 @@ public struct BroadcastTransactionResponse: Codable {
     let code: UInt32
     let data: Data // bytes.HexBytes
     let log: String
-    let codespace: String
+    let codespace: String // TODO: is this necessary?
     let hash: Data //bytes.HexBytes
 }
 
@@ -90,6 +90,11 @@ public struct CheckTransactionResponse: Codable {
 //    type ResultCheckTx struct {
 //        abci.ResponseCheckTx
 //    }
+    let code: UInt32
+    let data: Data // bytes.HexBytes
+    let log: String
+    let codespace: String // TODO: is this necessary?
+    let hash: Data //bytes.HexBytes
 }
 
 public struct CommitResponse: Codable {

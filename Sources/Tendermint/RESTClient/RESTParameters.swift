@@ -68,10 +68,6 @@ public struct RESTBroadcastTransactionParameters: Codable {
     }
     
     let transaction: TransactionBytes // types.Tx
-    
-    var hash: Data {
-        Hash.sum(data: transaction.data)
-    }
 }
 
 public struct RESTCommitParameters: Codable {

@@ -14,4 +14,8 @@ extension TransactionBytes {
     var data: Data {
         self
     }
+    
+    var hash: Data {
+        Hash.sum(data: self.data)
+    }
 }
