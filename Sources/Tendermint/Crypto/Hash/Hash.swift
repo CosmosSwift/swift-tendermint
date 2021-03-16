@@ -21,7 +21,7 @@ public struct Hash {
 
 extension Hash {
     // Sum returns the SHA256 of the bz.
-    static func sum(data: Data) -> Data {
+    public static func sum(data: Data) -> Data {
         Data(SHA256.hash(data: data))
     }
 
