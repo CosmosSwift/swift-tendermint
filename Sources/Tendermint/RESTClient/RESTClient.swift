@@ -76,7 +76,7 @@ extension RESTClient {
         return abciQueryMapToData(id: id, parameters: parameters)
     }*/
     
-    public func block(params: RESTBlockParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BlockResponse>> {
+    public func block(params: RESTHeightParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BlockResponse>> {
         let payload = RESTRequest(id: id, method: .block, params: params)
         return self.sendRequest(payload: payload)
     }
@@ -91,7 +91,7 @@ extension RESTClient {
         return self.sendRequest(payload: payload)
     }
 
-    public func blockResults(params: RESTBlockResultsParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BlockResultsResponse>> {
+    public func blockResults(params: RESTHeightParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<BlockResultsResponse>> {
         let payload = RESTRequest(id: id, method: .blockResults, params: params)
         return self.sendRequest(payload: payload)
     }
@@ -121,12 +121,12 @@ extension RESTClient {
         return self.sendRequest(payload: payload)
     }
 
-    public func commit(params: RESTCommitParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<CommitResponse>> {
+    public func commit(params: RESTHeightParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<CommitResponse>> {
         let payload = RESTRequest(id: id, method: .commit, params: params)
         return self.sendRequest(payload: payload)
     }
 
-    public func consensusParameters(params: RESTConsensusParametersParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ConsensusParametersResponse>> {
+    public func consensusParameters(params: RESTHeightParameters, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ConsensusParametersResponse>> {
         let payload = RESTRequest(id: id, method: .consensusParameters, params: params)
         return self.sendRequest(payload: payload)
     }
