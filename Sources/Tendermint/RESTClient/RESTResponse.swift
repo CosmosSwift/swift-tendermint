@@ -8,7 +8,7 @@ public struct RESTResponse<Payload: Codable>: Codable {
         case result
     }
     
-    internal func map<T: Codable>(_ f: (Payload) throws -> T) rethrows -> RESTResponse<T> {
+    public func map<T: Codable>(_ f: (Payload) throws -> T) rethrows -> RESTResponse<T> {
         switch self.result {
         case let .success(payload):
             return RESTResponse<T>(id: id, result: .success(try f(payload)))
