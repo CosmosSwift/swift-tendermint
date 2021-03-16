@@ -247,12 +247,12 @@ public struct TransactionResponse: Codable {
         case proof
     }
     
-    let hash: Data // bytes.HexBytes
-    let height: Int64
-    let index: UInt32
-    let transactionResult: ResponseDeliverTx
-    let transaction: TransactionBytes // types.Tx
-    let proof: Never // types.TxProof
+    public let hash: Data // bytes.HexBytes
+    public let height: Int64
+    public let index: UInt32
+    public let transactionResult: ResponseDeliverTx
+    public let transaction: TransactionBytes // types.Tx
+    public let proof: Never // types.TxProof
 }
 
 public struct TransactionSearchResponse: Codable {
