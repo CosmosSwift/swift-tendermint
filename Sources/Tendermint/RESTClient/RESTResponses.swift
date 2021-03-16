@@ -63,11 +63,11 @@ public struct BroadcastEvidenceResponse: Codable {
 }
 
 public struct BroadcastTransactionResponse: Codable {
-    let code: UInt32
-    let data: Data // bytes.HexBytes
-    let log: String
-    let codespace: String // TODO: is this necessary?
-    let hash: Data //bytes.HexBytes
+    public let code: UInt32
+    public let data: Data // bytes.HexBytes
+    public let log: String
+    public let codespace: String // TODO: is this necessary?
+    public let hash: Data //bytes.HexBytes
 }
 
 public struct BroadcastTransactionCommitResponse: Codable {
@@ -78,10 +78,10 @@ public struct BroadcastTransactionCommitResponse: Codable {
         case height
     }
     
-    let checkTransaction: ResponseCheckTx
-    let deliverTransaction: ResponseDeliverTx
-    let hash: Data // bytes.HexBytes
-    let height: Int64
+    public let checkTransaction: ResponseCheckTx
+    public let deliverTransaction: ResponseDeliverTx
+    public let hash: Data // bytes.HexBytes
+    public let height: Int64
 }
 
 public struct CheckTransactionResponse: Codable {
@@ -90,7 +90,7 @@ public struct CheckTransactionResponse: Codable {
 //    type ResultCheckTx struct {
 //        abci.ResponseCheckTx
 //    }
-    let checkTransaction: ResponseCheckTx
+    public let checkTransaction: ResponseCheckTx
 }
 
 public struct CommitResponse: Codable {
