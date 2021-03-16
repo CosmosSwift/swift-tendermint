@@ -11,11 +11,11 @@ import Foundation
 public typealias TransactionBytes = Data
 
 extension TransactionBytes {
-    var data: Data {
+    public var data: Data {
         self
     }
     
-    var hash: Data {
+    public var hash: Data {
         Hash.sum(data: self.data)
     }
 }

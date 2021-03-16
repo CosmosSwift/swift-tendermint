@@ -67,7 +67,7 @@ public struct RESTBroadcastTransactionParameters: Codable {
         case transaction = "tx"
     }
     
-    let transaction: TransactionBytes // types.Tx
+    public let transaction: TransactionBytes // types.Tx
 }
 
 public struct RESTCommitParameters: Codable {
