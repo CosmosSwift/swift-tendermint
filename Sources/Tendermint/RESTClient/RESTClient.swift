@@ -12,7 +12,7 @@ import NIOHTTP1
 
 public struct RESTClient {
     let url: String
-    let client: HTTPClient
+    public let client: HTTPClient
     
     let jsonEncoder = JSONEncoder()
     let jsonDecoder = JSONDecoder()
