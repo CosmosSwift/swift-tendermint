@@ -63,11 +63,11 @@ public struct BroadcastEvidenceResponse: Codable {
 }
 
 public struct BroadcastTransactionResponse: Codable {
-    let code: UInt32
-    let data: Data // bytes.HexBytes
-    let log: String
-    let codespace: String
-    let hash: Data //bytes.HexBytes
+    public let code: UInt32
+    public let data: Data // bytes.HexBytes
+    public let log: String
+    public let codespace: String // TODO: is this necessary?
+    public let hash: Data //bytes.HexBytes
 }
 
 public struct BroadcastTransactionCommitResponse: Codable {
@@ -78,10 +78,10 @@ public struct BroadcastTransactionCommitResponse: Codable {
         case height
     }
     
-    let checkTransaction: Never //abci.ResponseCheckTx
-    let deliverTransaction: Never // abci.ResponseDeliverTx
-    let hash: Data // bytes.HexBytes
-    let height: Int64
+    public let checkTransaction: ResponseCheckTx
+    public let deliverTransaction: ResponseDeliverTx
+    public let hash: Data // bytes.HexBytes
+    public let height: Int64
 }
 
 public struct CheckTransactionResponse: Codable {
@@ -90,6 +90,7 @@ public struct CheckTransactionResponse: Codable {
 //    type ResultCheckTx struct {
 //        abci.ResponseCheckTx
 //    }
+    public let checkTransaction: ResponseCheckTx
 }
 
 public struct CommitResponse: Codable {
@@ -246,12 +247,12 @@ public struct TransactionResponse: Codable {
         case proof
     }
     
-    let hash: Data // bytes.HexBytes
-    let height: Int64
-    let index: UInt32
-    let transactionResult: ResponseDeliverTx
-    let transaction: Never // types.Tx
-    let proof: Never // types.TxProof
+    public let hash: Data // bytes.HexBytes
+    public let height: Int64
+    public let index: UInt32
+    public let transactionResult: ResponseDeliverTx
+    public let transaction: TransactionBytes // types.Tx
+    public let proof: Never // types.TxProof
 }
 
 public struct TransactionSearchResponse: Codable {
@@ -275,7 +276,7 @@ public struct UnconfirmedTransactionsResponse: Codable {
     let count: Int
     let total: Int
     let totalBytes: Int64
-    let transactions: Never // []types.Tx
+    let transactions: [TransactionBytes] // []types.Tx
 }
 
 public struct UnsubscribeResponse: Codable { /* Empty on purpose */ }

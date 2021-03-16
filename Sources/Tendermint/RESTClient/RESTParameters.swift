@@ -40,25 +40,36 @@ public struct RESTABCIQueryParameters<Payload: Codable>: Codable {
     }
 }
 
-public struct RESTBlockParameters: Codable {
+public struct RESTHeightParameters: Codable {
     let height: Int64?
+    
+    public init(height: Int64? = nil) {
+        self.height = height
+    }
 }
 
 public struct RESTBlockByHashParameters: Codable {
     let hash: Data
+    
+    public init(hash: Data) { self.hash = hash }
 }
 
 public struct RESTBlockchainInfoParameters: Codable {
     let minHeight: Int64
     let maxHeight: Int64
-}
-
-public struct RESTBlockResultsParameters: Codable {
-    let height: Int64?
+    
+    public init(minHeight: Int64, maxHeight: Int64) {
+        self.minHeight = minHeight
+        self.maxHeight = maxHeight
+    }
 }
 
 public struct RESTBroadcastEvidenceParameters<Evidence: EvidenceProtocol>: Codable {
     let evidence: Evidence // types.Evidence
+    
+    public init(evidence: Evidence) {
+        self.evidence = evidence
+    }
 }
 
 public struct RESTBroadcastTransactionParameters: Codable {
@@ -66,38 +77,29 @@ public struct RESTBroadcastTransactionParameters: Codable {
         case transaction = "tx"
     }
     
-    let transaction: Never // types.Tx
-}
-
-public struct RESTBroadcastTransactionCommitParameters: Codable {
-    enum CodingKeys: String, CodingKey {
-        case transaction = "tx"
+    public let transaction: TransactionBytes // types.Tx
+    
+    public init(transaction: TransactionBytes) {
+        self.transaction = transaction
     }
-    let transaction: Never // types.Tx
-}
-
-public struct RESTCheckTransactionParameters: Codable {
-    enum CodingKeys: String, CodingKey {
-        case transaction = "tx"
-    }
-    let transaction: Never // types.Tx
-}
-
-public struct RESTCommitParameters: Codable {
-    let height: Int64?
-}
-
-public struct RESTConsensusParametersParameters: Codable {
-    let height: Int?
 }
 
 public struct RESTSubscribeParameters: Codable {
     let query: String
+    
+    public init(query: String) {
+        self.query = query
+    }
 }
 
 public struct RESTTransactionParameters: Codable {
     let hash: Data
     let prove: Bool
+    
+    public init(hash: Data, prove: Bool) {
+        self.hash = hash
+        self.prove = prove
+    }
 }
 
 public struct RESTTransactionSearchParameters: Codable {
@@ -114,14 +116,30 @@ public struct RESTTransactionSearchParameters: Codable {
     let page: Never?
     let perPage: Int?
     let orderBy: String
+    
+    public init(query: String, prove: Bool, page: Never?, perPage: Int?, orderBy: String) {
+        self.query = query
+        self.prove = prove
+        self.page = page
+        self.perPage = perPage
+        self.orderBy = orderBy
+    }
 }
 
 public struct RESTUnconfirmedTransactionsParameters: Codable {
     let limit: Int?
+    
+    public init(limit: Int? = nil) {
+        self.limit = limit
+    }
 }
 
 public struct RESTUnsubscribeParameters: Codable {
     let query: String
+    
+    public init(query: String) {
+        self.query = query
+    }
 }
 
 public struct RESTValidatorsParameters: Codable {
@@ -134,4 +152,10 @@ public struct RESTValidatorsParameters: Codable {
     let height: Int64?
     let page: Never?
     let perPage: Int?
+    
+    public init(height: Int64?, page: Never?, perPage: Int?) {
+        self.height = height
+        self.page = page
+        self.perPage = perPage
+    }
 }

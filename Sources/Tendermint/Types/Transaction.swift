@@ -6,3 +6,6 @@
 //
 
 import Foundation
+
+
+public typealias TransactionBytes = Data
