@@ -9,11 +9,11 @@ import Foundation
 import ABCIMessages
 
 public struct ABCIInfoResponse: Codable {
-    let response: ResponseInfo
+    public let response: ResponseInfo
 }
 
 public struct ABCIQueryResponse<Payload: Codable>: Codable {
-    let response: ResponseQuery<Payload>
+    public let response: ResponseQuery<Payload>
     
     func map<T: Codable>(_ f: (Payload) throws -> T) rethrows -> ABCIQueryResponse<T> {
         ABCIQueryResponse<T>(response: try response.mapPayload(f))
@@ -26,8 +26,8 @@ public struct BlockResponse: Codable {
         case block
     }
     
-    let blockID: Block.BlockID
-    let block: Block
+    public let blockID: Block.BlockID
+    public let block: Block
 }
 
 public struct BlockchainInfoResponse: Codable {
@@ -36,8 +36,8 @@ public struct BlockchainInfoResponse: Codable {
         case blockMetas = "block_metas"
     }
     
-    let lastHeight: Int64
-    let blockMetas: [BlockMeta]
+    public let lastHeight: Int64
+    public let blockMetas: [BlockMeta]
 }
 
 public struct BlockResultsResponse: Codable {
@@ -50,16 +50,16 @@ public struct BlockResultsResponse: Codable {
         case consensusParameterUpdates = "consensus_param_updates"
     }
     
-    let height: Int64
-    let transactionResults: [ResponseDeliverTx]
-    let beginBlockEvents: [Event]
-    let endBlockEvents: [Event]
-    let validatorUpdates: Never // []abci.ValidatorUpdate
-    let consensusParameterUpdates: Never // *tmproto.ConsensusParams
+    public let height: Int64
+    public let transactionResults: [ResponseDeliverTx]
+    public let beginBlockEvents: [Event]
+    public let endBlockEvents: [Event]
+    public let validatorUpdates: Never // []abci.ValidatorUpdate
+    public let consensusParameterUpdates: Never // *tmproto.ConsensusParams
 }
 
 public struct BroadcastEvidenceResponse: Codable {
-    let hash: Data
+    public let hash: Data
 }
 
 public struct BroadcastTransactionResponse: Codable {
@@ -104,8 +104,8 @@ public struct CommitResponse: Codable {
         case canonicalCommit = "canonical"
     }
     
-    let signedHeader: Never // not sure if this is a dedicated wrapping of SignedHeader or all Signedheader properties are inherited
-    let canonicalCommit: Bool
+    public let signedHeader: Never // not sure if this is a dedicated wrapping of SignedHeader or all Signedheader properties are inherited
+    public let canonicalCommit: Bool
 }
 
 public struct ConsensusParametersResponse: Codable {
@@ -114,8 +114,8 @@ public struct ConsensusParametersResponse: Codable {
         case consensusParameters = "consensus_params"
     }
     
-    let blockHeight: Int64
-    let consensusParameters: ConsensusParameters //types.ConsensusParams
+    public let blockHeight: Int64
+    public let consensusParameters: ConsensusParameters //types.ConsensusParams
 }
 
 public struct ConsensusStateResponse: Codable {
@@ -123,7 +123,7 @@ public struct ConsensusStateResponse: Codable {
         case roundState = "round_state"
     }
     
-    let roundState: Never // json.RawMessage
+    public let roundState: Never // json.RawMessage
 }
 
 public struct DumpConsensusStateResponse: Codable {
@@ -132,8 +132,8 @@ public struct DumpConsensusStateResponse: Codable {
         case peers
     }
     
-    let roundState: Never // json.RawMessage
-    let peers: [PeerStateInfo]
+    public let roundState: Never // json.RawMessage
+    public let peers: [PeerStateInfo]
     
     public struct PeerStateInfo: Codable {
         enum CodingKeys: String, CodingKey {
@@ -141,13 +141,13 @@ public struct DumpConsensusStateResponse: Codable {
             case peerState = "peer_state"
         }
         
-        let nodeAddress: String
-        let peerState: Never // json.RawMessage
+        public let nodeAddress: String
+        public let peerState: Never // json.RawMessage
     }
 }
 
 public struct GenesisResponse<AppState: Codable>: Codable {
-    let genesis: GenesisDocument<AppState> // types.GenesisDoc
+    public let genesis: GenesisDocument<AppState> // types.GenesisDoc
 }
 
 public struct HealthResponse: Codable { /* Empty on purpose */ }
@@ -160,10 +160,10 @@ public struct NetInfoResponse: Codable {
         case peers
     }
     
-    let listening: Bool
-    let listeners: [String]
-    let numberOfPeers: Int
-    let peers: [Peer]
+    public let listening: Bool
+    public let listeners: [String]
+    public let numberOfPeers: Int
+    public let peers: [Peer]
     
     public struct Peer: Codable {
         enum CodingKeys: String, CodingKey {
@@ -173,10 +173,10 @@ public struct NetInfoResponse: Codable {
             case remoteIP = "remote_ip"
         }
         
-        let nodeInfo: Never // p2p.NodeInfo
-        let isOutbound: Bool
-        let connectionStatus: Never // p2p.ConnectionStatus
-        let remoteIP: String
+        public let nodeInfo: Never // p2p.NodeInfo
+        public let isOutbound: Bool
+        public let connectionStatus: Never // p2p.ConnectionStatus
+        public let remoteIP: String
     }
 }
 
@@ -188,9 +188,9 @@ public struct StatusResponse<PublicKey: PublicKeyProtocol>: Codable {
         case validatorInfo = "validator_info"
     }
     
-    let nodeInfo: Never // p2p.NodeInfo
-    let syncInfo: SyncInfo
-    let validatorInfo: ValidatorInfo<PublicKey>
+    public let nodeInfo: Never // p2p.NodeInfo
+    public let syncInfo: SyncInfo
+    public let validatorInfo: ValidatorInfo<PublicKey>
     
     // Info about the node's syncing state
     public struct SyncInfo: Codable {
@@ -208,17 +208,17 @@ public struct StatusResponse<PublicKey: PublicKeyProtocol>: Codable {
             case catchingUp = "catching_up"
         }
         
-        let latestBlockHash: Data // bytes.HexBytes
-        let latestAppHash: Data // bytes.HexBytes
-        let latestBlockHeight: Int64
-        let latestBlockTime: Date // time.Time
+        public let latestBlockHash: Data // bytes.HexBytes
+        public let latestAppHash: Data // bytes.HexBytes
+        public let latestBlockHeight: Int64
+        public let latestBlockTime: Date // time.Time
+
+        public let earliestBlockHash: Data // bytes.HexBytes
+        public let earliestAppHash: Data // bytes.HexBytes
+        public let earliestBlockHeight: Int64
+        public let earliestBlockTime: Date // time.Time
         
-        let earliestBlockHash: Data // bytes.HexBytes
-        let earliestAppHash: Data // bytes.HexBytes
-        let earliestBlockHeight: Int64
-        let earliestBlockTime: Date // time.Time
-        
-        let catchingUp: Bool
+        public let catchingUp: Bool
     }
     
     // Info about the node's validator
@@ -229,9 +229,9 @@ public struct StatusResponse<PublicKey: PublicKeyProtocol>: Codable {
             case votingPower = "voting_power"
         }
         
-        let address: Data // bytes.HexBytes
-        let pubKey: PublicKey // crypto.PubKey
-        let votingPower: Int64
+        public let address: Data // bytes.HexBytes
+        public let pubKey: PublicKey // crypto.PubKey
+        public let votingPower: Int64
     }
 }
 
@@ -261,8 +261,8 @@ public struct TransactionSearchResponse: Codable {
         case totalCount = "total_count"
     }
     
-    let transactions: [TransactionResponse]
-    let totalCount: Int
+    public let transactions: [TransactionResponse]
+    public let totalCount: Int
 }
 
 public struct UnconfirmedTransactionsResponse: Codable {
@@ -273,10 +273,10 @@ public struct UnconfirmedTransactionsResponse: Codable {
         case transactions = "txs"
     }
     
-    let count: Int
-    let total: Int
-    let totalBytes: Int64
-    let transactions: [TransactionBytes] // []types.Tx
+    public let count: Int
+    public let total: Int
+    public let totalBytes: Int64
+    public let transactions: [TransactionBytes] // []types.Tx
 }
 
 public struct UnsubscribeResponse: Codable { /* Empty on purpose */ }
@@ -289,8 +289,8 @@ public struct ValidatorsResponse<PublicKey: PublicKeyProtocol>: Codable {
         case total
     }
     
-    let blockHeight: Int64
-    let validators: [Validator<PublicKey>]
-    let count: Int
-    let total: Int
+    public let blockHeight: Int64
+    public let validators: [Validator<PublicKey>]
+    public let count: Int
+    public let total: Int
 }

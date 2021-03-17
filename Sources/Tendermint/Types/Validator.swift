@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct Validator<PublicKey: PublicKeyProtocol>: Codable {
-    let address: Address
-    let publicKey: PublicKey
-    let votingPower: Int64
-    let proposerPriority: Int64
+public struct Validator<PublicKey: PublicKeyProtocol>: Codable {
+    public let address: Address
+    public let publicKey: PublicKey
+    public let votingPower: Int64
+    public let proposerPriority: Int64
     
     enum CodingKeys: String, CodingKey {
         case address

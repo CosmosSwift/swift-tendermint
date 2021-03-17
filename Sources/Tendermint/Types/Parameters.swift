@@ -2,7 +2,7 @@ import Foundation
 
 // ConsensusParams contains consensus critical parameters that determine the
 // validity of blocks.
-struct ConsensusParameters: Codable {
+public struct ConsensusParameters: Codable {
     // MaxBlockSizeBytes is the maximum permitted size of the blocks.
     static let maximumBlockSizeBytes = 104857600 // 100MB
 
@@ -12,17 +12,17 @@ struct ConsensusParameters: Codable {
     // MaxBlockPartsCount is the maximum number of block parts.
     static let maximumBlockPartsCount = (maximumBlockSizeBytes / blockPartSizeBytes) + 1
 
-    let block: BlockParameters
-    let evidence: EvidenceParameters
-    let validator: ValidatorParameters
-    let version: VersionParameters
+    public let block: BlockParameters
+    public let evidence: EvidenceParameters
+    public let validator: ValidatorParameters
+    public let version: VersionParameters
 }
 
 // BlockParams define limits on the block size and gas plus minimum time
 // between blocks.
-struct BlockParameters: Codable {
-    let maximumBytes: Int64
-    let maximumGas: Int64
+public struct BlockParameters: Codable {
+    public let maximumBytes: Int64
+    public let maximumGas: Int64
     
     private enum CodingKeys: String, CodingKey {
         case maximumBytes = "max_bytes"
@@ -31,11 +31,11 @@ struct BlockParameters: Codable {
 }
 
 // EvidenceParams determine how we handle evidence of malfeasance.
-struct EvidenceParameters: Codable {
+public struct EvidenceParameters: Codable {
     // only accept new evidence more recent than this
-    let maximumAgeNumberBlocks: Int64
-    let maximumAgeDuration: Time
-    let maxBytes: Int64
+    public let maximumAgeNumberBlocks: Int64
+    public let maximumAgeDuration: Time
+    public let maxBytes: Int64
     
     private enum CodingKeys: String, CodingKey {
         case maximumAgeNumberBlocks = "max_age_num_blocks"
@@ -46,22 +46,22 @@ struct EvidenceParameters: Codable {
 
 // ValidatorParams restrict the public key types validators can use.
 // NOTE: uses ABCI pubkey naming, not Amino names.
-struct ValidatorParameters: Codable {
-    enum PublicKeyType: String, Codable {
+public struct ValidatorParameters: Codable {
+    public enum PublicKeyType: String, Codable {
         case ed25519
         case sr25519
         case secp256k1
     }
 
-    let publicKeyTypes: [PublicKeyType]
+    public let publicKeyTypes: [PublicKeyType]
     
     private enum CodingKeys: String, CodingKey {
         case publicKeyTypes = "pub_key_types"
     }
 }
 
-struct VersionParameters: Codable {
-    let appVersion: UInt64
+public struct VersionParameters: Codable {
+    public let appVersion: UInt64
     
     private enum CodingKeys: String, CodingKey {
         case appVersion = "app_version"
@@ -90,7 +90,7 @@ extension BlockParameters {
     }
 }
 
-enum Time: RawRepresentable, Codable, CustomStringConvertible {
+public enum Time: RawRepresentable, Codable, CustomStringConvertible {
     case nanoSecond(TimeInterval)
     case microSecond(TimeInterval)
     case milliSecond(TimeInterval)
@@ -98,11 +98,11 @@ enum Time: RawRepresentable, Codable, CustomStringConvertible {
     case minute(TimeInterval)
     case hour(TimeInterval)
     
-    init?(rawValue: Double) {
+    public init?(rawValue: Double) {
         self = .nanoSecond(rawValue)
     }
     
-    var rawValue: TimeInterval {
+    public var rawValue: TimeInterval {
         switch self {
         case .nanoSecond(let value):
             return value
@@ -119,7 +119,7 @@ enum Time: RawRepresentable, Codable, CustomStringConvertible {
         }
     }
     
-    var description: String {
+    public var description: String {
         switch self {
         case .nanoSecond(let value):
             return "\(value)ns"

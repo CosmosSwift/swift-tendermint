@@ -8,11 +8,11 @@
 import Foundation
 
 // BlockMeta contains meta information.
-struct BlockMeta: Codable {
-    let blockID: Block.BlockID
-    let blockSize: Int
-    let header: Block.Header
-    let numberOfTransactions: Int
+public struct BlockMeta: Codable {
+    public let blockID: Block.BlockID
+    public let blockSize: Int
+    public let header: Block.Header
+    public let numberOfTransactions: Int
     
     enum CodingKeys: String, CodingKey {
         case blockID = "block_id"
