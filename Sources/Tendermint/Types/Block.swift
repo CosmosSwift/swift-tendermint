@@ -8,7 +8,7 @@
 import Foundation
 
 // Block defines the atomic unit of a Tendermint blockchain.
-struct Block: Codable {
+public struct Block: Codable {
     enum CodingKeys: String, CodingKey {
         case header
         case data
@@ -16,11 +16,11 @@ struct Block: Codable {
         case lastCommit = "last_commit"
     }
     
-    let mtx: Never? = nil // tmsync.Mutex
-    let header: Header
-    let data: BlockData
-    let evidence: EvidenceData
-    let lastCommit: Commit
+    public let mtx: Never? = nil // tmsync.Mutex
+    public let header: Header
+    public let data: BlockData
+    public let evidence: EvidenceData
+    public let lastCommit: Commit
     
 //    // Block defines the atomic unit of a Tendermint blockchain.
 //    type Block struct {
@@ -33,7 +33,7 @@ struct Block: Codable {
 //    }
     
     
-    struct Header: Codable {
+    public struct Header: Codable {
         // Header defines the structure of a Tendermint block header.
         // NOTE: changes to the Header should be duplicated in:
         // - header.Hash()
@@ -70,14 +70,14 @@ struct Block: Codable {
 
     }
     
-    typealias BlockIDFlag = UInt8
+    public typealias BlockIDFlag = UInt8
     
     // CommitSig is a part of the Vote included in a Commit.
-    struct CommitSignature: Codable {
-        let blockIDFlag: BlockIDFlag
-        let validatorAddress: Address
-        let timestamp: Date
-        let signature: Data
+    public struct CommitSignature: Codable {
+        public let blockIDFlag: BlockIDFlag
+        public let validatorAddress: Address
+        public let timestamp: Date
+        public let signature: Data
         
         enum CodingKeys: String, CodingKey {
             case blockIDFlag = "block_id_flag"
@@ -89,13 +89,13 @@ struct Block: Codable {
 
     // Commit contains the evidence that a block was committed by a set of validators.
     // NOTE: Commit is empty for height 1, but never nil.
-    struct Commit: Codable {
-        let height: Int64
-        let round: Int32
-        let blockID: Never
-        let signatures: [CommitSignature]
-        let hash: Data? = nil //tmbytes.HexBytes,    no json? optional and default value set to nil in order to compile
-        let bitArray: Never? = nil //*bits.BitArray, no json? optional and default value set to nil in order to compile
+    public struct Commit: Codable {
+        public let height: Int64
+        public let round: Int32
+        public let blockID: Never
+        public let signatures: [CommitSignature]
+        public let hash: Data? = nil //tmbytes.HexBytes,    no json? optional and default value set to nil in order to compile
+        public let bitArray: Never? = nil //*bits.BitArray, no json? optional and default value set to nil in order to compile
         
         enum CodingKeys: String, CodingKey {
             case height
@@ -105,23 +105,23 @@ struct Block: Codable {
         }
     }
 
-    struct BlockData: Codable {
-        let transactions: Never // Txs // type Txs []Tx
-        let hash: Data? = nil // tmbytes.HexBytes, no json? optional and default value set to nil in order to compile
+    public struct BlockData: Codable {
+        public let transactions: Never // Txs // type Txs []Tx
+        public let hash: Data? = nil // tmbytes.HexBytes, no json? optional and default value set to nil in order to compile
         
         enum CodingKeys: String, CodingKey {
             case transactions = "txs"
         }
     }
     
-    struct EvidenceData: Codable {
-        let evidence: [Never] // probably need to do some type erasure using something like AnyEvidence, that or generic over Evidence: EvidenceProtocol
-        let hash: Data // tmbytes.HexBytes
+    public struct EvidenceData: Codable {
+        public let evidence: [Never] // probably need to do some type erasure using something like AnyEvidence, that or generic over Evidence: EvidenceProtocol
+        public let hash: Data // tmbytes.HexBytes
     }
     
-    struct BlockID: Codable {
-        let hash: Data //tmbytes.HexBytes
-        let partSetHeader: PartSetHeader
+    public struct BlockID: Codable {
+        public let hash: Data //tmbytes.HexBytes
+        public let partSetHeader: PartSetHeader
         
         enum CodingKeys: String, CodingKey {
             case hash
