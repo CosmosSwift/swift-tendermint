@@ -34,40 +34,46 @@ public struct Block: Codable {
     
     
     public struct Header: Codable {
-        // Header defines the structure of a Tendermint block header.
-        // NOTE: changes to the Header should be duplicated in:
-        // - header.Hash()
-        // - abci.Header
-        // - https://github.com/tendermint/spec/blob/master/spec/blockchain/blockchain.md
-    //    type Header struct {
-    //        // basic block info
-    //        Version tmversion.Consensus `json:"version"`
-    //        ChainID string              `json:"chain_id"`
-    //        Height  int64               `json:"height"`
-    //        Time    time.Time           `json:"time"`
-    //
-    //        // prev block info
-    //        LastBlockID BlockID `json:"last_block_id"`
-    //
-    //        // hashes of block data
-    //        LastCommitHash tmbytes.HexBytes `json:"last_commit_hash"` // commit from validators from the last block
-    //        DataHash       tmbytes.HexBytes `json:"data_hash"`        // transactions
-    //
-    //        // hashes from the app output from the prev block
-    //        ValidatorsHash     tmbytes.HexBytes `json:"validators_hash"`      // validators for the current block
-    //        NextValidatorsHash tmbytes.HexBytes `json:"next_validators_hash"` // validators for the next block
-    //        ConsensusHash      tmbytes.HexBytes `json:"consensus_hash"`       // consensus params for current block
-    //        AppHash            tmbytes.HexBytes `json:"app_hash"`             // state after txs from the previous block
-    //        // root hash of all results from the txs from the previous block
-    //        LastResultsHash tmbytes.HexBytes `json:"last_results_hash"`
-    //
-    //        // consensus info
-    //        EvidenceHash    tmbytes.HexBytes `json:"evidence_hash"`    // evidence included in the block
-    //        ProposerAddress Address          `json:"proposer_address"` // original proposer of the block
-    //    }
+        public let version: Never
+        public let chainID: String
+        public let height: Int64
+        public let time: Date
         
-        let toBeImplemented: Never
-
+        public let lastBlockID: BlockID
+        
+        // hashes of block data
+        public let lastCommitHash: Data // tmbytes.HexBytes
+        public let dataHash: Data // tmbytes.HexBytes
+        
+        // hashes from the app output from the prev block
+        public let validatorsHash: Data // tmbytes.HexBytes
+        public let nextValidatorsHash: Data // tmbytes.HexBytes
+        public let consensusHash: Data // tmbytes.HexBytes
+        public let appHash: Data // tmbytes.HexBytes
+        
+        // root hash of all results from the txs from the previous block
+        public let lastResultsHash: Data // tmbytes.HexBytes
+         
+        // consensus info
+        public let evidenceHash: Data // tmbytes.HexBytes
+        public let proposerAddress: Address
+        
+        enum CodingKeys: String, CodingKey {
+            case version
+            case chainID = "chain_id"
+            case height
+            case time
+            case lastBlockID = "last_block_id"
+            case lastCommitHash = "last_commit_hash"
+            case dataHash = "data_hash"
+            case validatorsHash = "validators_hash"
+            case nextValidatorsHash = "next_validators_hash"
+            case consensusHash = "consensus_hash"
+            case appHash = "app_hash"
+            case lastResultsHash = "last_results_hash"
+            case evidenceHash = "evidence_hash"
+            case proposerAddress = "proposer_address"
+        }
     }
     
     public typealias BlockIDFlag = UInt8
