@@ -28,7 +28,7 @@ public extension PublicKeyProtocol {
 public protocol PrivateKey: ProtocolCodable {
     var data: Data { get }
     var publicKey: PublicKeyProtocol { get}
-    func sign(message: Data) throws -> Data
+    func sign<D>(message: D) throws -> Data  where D : DataProtocol
     func equals(privateKey: PrivateKey) -> Bool
 }
     

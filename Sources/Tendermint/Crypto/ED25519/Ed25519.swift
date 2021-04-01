@@ -36,7 +36,7 @@ public struct Ed25519PrivateKey: PrivateKey {
         try container.encode(data)
     }
     
-    public func sign(message: Data) throws -> Data {
+    public func sign<D>(message: D) throws -> Data  where D : DataProtocol {
         try key.signature(for: message)
     }
     
