@@ -68,6 +68,15 @@ public struct BroadcastTransactionResponse: Codable {
     public let log: String
     public let codespace: String // TODO: is this necessary?
     public let hash: Data //bytes.HexBytes
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        code = (try? container.decode(UInt32.self, forKey: .code)) ?? 0
+        data = (try? container.decode(Data.self, forKey: .data)) ?? Data()
+        log = (try? container.decode(String.self, forKey: .log)) ?? ""
+        codespace = (try? container.decode(String.self, forKey: .codespace)) ?? ""
+        hash = (try? container.decode(Data.self, forKey: .hash)) ?? Data()
+    }
 }
 
 public struct BroadcastTransactionCommitResponse: Codable {
