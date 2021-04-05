@@ -28,7 +28,7 @@ extension Data {
         return String(utf16CodeUnits: chars, count: chars.count)
     }
     
-    public init?(hexEncoded hexString: String) {
+    public init?<S: StringProtocol>(hexEncoded hexString: S) {
             // Convert 0 ... 9, a ... f, A ...F to their decimal value,
             // return nil for all other input characters
             func decodeNibble(_ u: UInt16) -> UInt8? {
