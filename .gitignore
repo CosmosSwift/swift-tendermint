@@ -8,3 +8,4 @@ DerivedData/
 
 .build
 .swiftpm
+Package.resolved
