@@ -8,35 +8,9 @@
 import Foundation
 import ABCIMessages
 
-public struct RESTABCIQueryParameters<Payload: Codable>: Codable {
-    let path: String
-    let data: Payload // bytes.HexBytes
-    let height: Int64?
-    let prove: Bool?
-    
-    public init(path: String, data: Payload) {
-        self.path = path
-        self.data = data
-        self.height = nil
-        self.prove = nil
-    }
-    
-    public init(path: String, data: Payload, height: Int64, prove: Bool) {
-        self.path = path
-        self.data = data
-        self.height = height
-        self.prove = prove
-    }
-    
-    private init(path: String, data: Payload, height: Int64?, prove: Bool?) {
-        self.path = path
-        self.data = data
-        self.height = height
-        self.prove = prove
-    }
-    
-    internal func mapPayload<T: Codable>(_ f: (Payload) throws -> T) rethrows -> RESTABCIQueryParameters<T> {
-        return RESTABCIQueryParameters<T>(path: path, data: try f(data), height: height, prove: prove)
+extension RequestQuery {
+    internal func mapPayload<T: Codable>(_ f: (Payload) throws -> T) rethrows -> RequestQuery<T> {
+        return RequestQuery<T>(path: path, data: try f(data), height: height, prove: prove)
     }
 }
 

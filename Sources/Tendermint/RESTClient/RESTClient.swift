@@ -9,6 +9,7 @@ import Foundation
 import AsyncHTTPClient
 import NIO
 import NIOHTTP1
+import ABCIMessages
 
 public struct RESTClient {
     let url: String
@@ -41,13 +42,13 @@ extension RESTClient {
         return self.sendRequest(payload: payload)
     }
     
-    public func abciQuery(parameters: RESTABCIQueryParameters<Data>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
+    public func abciQuery(parameters: RequestQuery<Data>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
         let payload = RESTRequest(id: id, method: .abciQuery, params: parameters)
         return self.sendRequest(payload: payload)
     }
     
-    public func abciQueryMapToData<ParameterPayload, ResponsePayload>(parameters: RESTABCIQueryParameters<ParameterPayload>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<ResponsePayload>>> {
-        let dataParameters: RESTABCIQueryParameters<Data>
+    public func abciQueryMapToData<ParameterPayload: Codable, ResponsePayload>(parameters: RequestQuery<ParameterPayload>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<ResponsePayload>>> {
+        let dataParameters: RequestQuery<Data>
         do {
             dataParameters = try parameters.mapPayload { (payload) throws -> Data in
                 #warning("might have to do some hexstring encoding here?")
