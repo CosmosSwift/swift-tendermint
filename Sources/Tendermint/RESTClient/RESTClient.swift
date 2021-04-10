@@ -41,17 +41,16 @@ extension RESTClient {
         return self.sendRequest(payload: payload)
     }
     
-    private func abciQuery(parameters: RESTABCIQueryParameters<Data>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
+    private func abciQuery(parameters: RESTABCIQueryParameters<String>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
         let payload = RESTRequest(id: id, method: .abciQuery, params: parameters)
         return self.sendRequest(payload: payload)
     }
     
     public func abciQueryMapToData<ParameterPayload, ResponsePayload>(parameters: RESTABCIQueryParameters<ParameterPayload>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<ResponsePayload>>> {
-        let dataParameters: RESTABCIQueryParameters<Data>
+        let dataParameters: RESTABCIQueryParameters<String>
         do {
-            dataParameters = try parameters.mapPayload { (payload) throws -> Data in
-                #warning("might have to do some hexstring encoding here?")
-                return try jsonEncoder.encode(payload)
+            dataParameters = try parameters.mapPayload { (payload) throws -> String in
+                return (try jsonEncoder.encode(payload)).hexEncodedString(options: .upperCase)
             }
         } catch {
             return client.eventLoopGroup.next().makeFailedFuture(error)
@@ -59,8 +58,10 @@ extension RESTClient {
         return abciQuery(parameters: dataParameters, id: id).flatMap { response in
             do {
                 let decodedResponse = try response.map { queryResponse in
-                    try queryResponse.map { data -> ResponsePayload in
+                    try queryResponse.map { base64Data -> ResponsePayload in
                         #warning("might have to do some base64 decoding here?")
+                        let data = Data(base64Encoded: base64Data) ?? base64Data
+                        print(String(data: data, encoding: .utf8))
                         return try jsonDecoder.decode(ResponsePayload.self, from: data)
                     }
                 }
@@ -226,6 +227,8 @@ extension RESTClient {
             
             let bodyString = String(data: data, encoding: .utf8) ?? ""
             
+            print(bodyString)
+            
             let request = try HTTPClient.Request(url: url, method: .POST, headers: headers, body: .string(bodyString))
             
             return client.execute(request: request).flatMap { response in
@@ -234,7 +237,7 @@ extension RESTClient {
                         throw RESTRequestError.badResponse
                     }
                     let responseData = Data(byteBuffer.readableBytesView)
-                    
+                    print(String(data: responseData, encoding: .utf8))
                     guard response.status == .ok else {
                         // decode some error for now throw error
                         //return self.client.eventLoopGroup.next().makeFailedFuture(jsonDecoder.decode(errorType, from: responseData))

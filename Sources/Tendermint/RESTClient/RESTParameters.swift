@@ -11,7 +11,7 @@ import ABCIMessages
 public struct RESTABCIQueryParameters<Payload: Codable>: Codable {
     let path: String
     let data: Payload // bytes.HexBytes
-    let height: Int64?
+    var height: Height?
     let prove: Bool?
     
     public init(path: String, data: Payload) {
@@ -21,14 +21,14 @@ public struct RESTABCIQueryParameters<Payload: Codable>: Codable {
         self.prove = nil
     }
     
-    public init(path: String, data: Payload, height: Int64, prove: Bool) {
+    public init(path: String, data: Payload, height: Height, prove: Bool) {
         self.path = path
         self.data = data
         self.height = height
         self.prove = prove
     }
     
-    private init(path: String, data: Payload, height: Int64?, prove: Bool?) {
+    private init(path: String, data: Payload, height: Height?, prove: Bool?) {
         self.path = path
         self.data = data
         self.height = height
@@ -41,9 +41,9 @@ public struct RESTABCIQueryParameters<Payload: Codable>: Codable {
 }
 
 public struct RESTHeightParameters: Codable {
-    let height: Int64?
+    var height: Height?
     
-    public init(height: Int64? = nil) {
+    public init(height: Height? = nil) {
         self.height = height
     }
 }
@@ -55,10 +55,10 @@ public struct RESTBlockByHashParameters: Codable {
 }
 
 public struct RESTBlockchainInfoParameters: Codable {
-    let minHeight: Int64
-    let maxHeight: Int64
+    var minHeight: Height
+    var maxHeight: Height
     
-    public init(minHeight: Int64, maxHeight: Int64) {
+    public init(minHeight: Height, maxHeight: Height) {
         self.minHeight = minHeight
         self.maxHeight = maxHeight
     }
@@ -149,11 +149,11 @@ public struct RESTValidatorsParameters: Codable {
         case perPage = "per_page"
     }
     
-    let height: Int64?
+    var height: Height?
     let page: Never?
     let perPage: Int?
     
-    public init(height: Int64?, page: Never?, perPage: Int?) {
+    public init(height: Height?, page: Never?, perPage: Int?) {
         self.height = height
         self.page = page
         self.perPage = perPage

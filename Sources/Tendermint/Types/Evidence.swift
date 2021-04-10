@@ -12,7 +12,7 @@ public protocol EvidenceProtocol: Codable {
     func abci() -> ABCIMessages.Evidence
     func data() -> Data
     func hash() -> Data
-    func height() -> Int64
+    func height() -> Height
     func string() -> String
     func time() -> Date
     func validateBasic() -> Error

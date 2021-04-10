@@ -10,7 +10,7 @@ import Foundation
 public struct GenesisValidator: Codable {
     var address: Address
     let publicKey: PublicKeyProtocol // TODO: should be an abstract PublicKey, but need to work out how to make it codable
-    let power: Int64
+    let power: StringRepresentedInt<Int64>
     let name: String
     
     private enum CodingKeys: String, CodingKey {
@@ -23,7 +23,7 @@ public struct GenesisValidator: Codable {
     public init(address: Address, publicKey: PublicKeyProtocol, power: Int64, name: String) {
         self.address = address
         self.publicKey = publicKey
-        self.power = power
+        self.power = StringRepresentedInt<Int64>(power)
         self.name = name
     }
     
@@ -52,7 +52,7 @@ public struct GenesisValidator: Codable {
 
         self.address = address
         self.publicKey = publicKey
-        self.power = power
+        self.power = StringRepresentedInt<Int64>(power)
         self.name = name
     }
     
@@ -60,7 +60,7 @@ public struct GenesisValidator: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(address, forKey: .address)
         try container.encode(AnyProtocolCodable(publicKey), forKey: .publicKey)
-        try container.encode("\(power)", forKey: .power)
+        try container.encode(power, forKey: .power)
         try container.encode(name, forKey: .name)
     }
 }
@@ -84,11 +84,11 @@ public struct GenesisDocument<AppState: Codable>: Codable {
     
     let genesisTime: Date
     public var chainID: String
-    let initialHeight: Int64
-    var consensusParameters: ConsensusParameters?
-    public var validators: [GenesisValidator]?
-    let appHash: Data
-    public var appState: AppState?
+    var initialHeight: Height?// { get {nil} set(value) {}}
+    var consensusParameters: ConsensusParameters? //{ get {nil} set(value) {}}
+    public var validators: [GenesisValidator]? //{ get {nil} set(value) {}}
+    var appHash: Data? //{ get {Data()} set(value) {}}
+    public var appState: AppState? // { get {nil} set(value) {}}
     
     private enum CodingKeys: String, CodingKey {
         case genesisTime = "genesis_time"
@@ -195,7 +195,7 @@ extension GenesisDocument {
     var validators = self.validators ?? []
 
         for (i, validator) in validators.enumerated() {
-            if validator.power == 0 {
+            if Int64(validator.power) == 0 {
                 throw ValidationError(description: "the genesis file cannot contain validators with no voting power: \(validator)")
             }
             
@@ -215,4 +215,6 @@ extension GenesisDocument {
 //            genesisTime = Date()
 //        }
     }
+
 }
+

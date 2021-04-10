@@ -25,5 +25,5 @@ struct PartSet {
     public let parts: [Part]
     public let partsBitArray: Never // *bits.BitArray
     public let count: UInt32
-    public let byteSize: Int64
+    public let byteSize: StringRepresentedInt<Int64>
 }
