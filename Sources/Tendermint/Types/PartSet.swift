@@ -1,11 +1,5 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jaap Wijnen on 09/03/2021.
-//
-
 import Foundation
+import ABCIMessages
 
 struct Part: Codable {
     public let index: UInt32

@@ -1,4 +1,5 @@
 import Foundation
+import ABCIMessages
 
 enum LogFormat: String, Codable {
     // LogFormatPlain is a format for colored text

@@ -1,11 +1,6 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jaap Wijnen on 09/03/2021.
-//
 
 import Foundation
+import ABCIMessages
 
 public struct Validator<PublicKey: PublicKeyProtocol>: Codable {
     public let address: Address

@@ -1,4 +1,5 @@
 import Foundation
+import ABCIMessages
 
 public struct FilePrivateValidatorKey: Codable {
     public let address: Address

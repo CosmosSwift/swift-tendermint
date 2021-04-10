@@ -1,42 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jaap Wijnen on 05/03/2021.
-//
-
 import Foundation
 import ABCIMessages
 
-public struct RESTABCIQueryParameters<Payload: Codable>: Codable {
-    let path: String
-    let data: Payload // bytes.HexBytes
-    var height: Height?
-    let prove: Bool?
-    
-    public init(path: String, data: Payload) {
-        self.path = path
-        self.data = data
-        self.height = nil
-        self.prove = nil
-    }
-    
-    public init(path: String, data: Payload, height: Height, prove: Bool) {
-        self.path = path
-        self.data = data
-        self.height = height
-        self.prove = prove
-    }
-    
-    private init(path: String, data: Payload, height: Height?, prove: Bool?) {
-        self.path = path
-        self.data = data
-        self.height = height
-        self.prove = prove
-    }
-    
-    internal func mapPayload<T: Codable>(_ f: (Payload) throws -> T) rethrows -> RESTABCIQueryParameters<T> {
-        return RESTABCIQueryParameters<T>(path: path, data: try f(data), height: height, prove: prove)
+extension RequestQuery {
+    internal func mapPayload<T: Codable>(_ f: (Payload) throws -> T) rethrows -> RequestQuery<T> {
+        return RequestQuery<T>(path: path, data: try f(data), height: height, prove: prove)
     }
 }
 

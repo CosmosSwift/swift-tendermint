@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "Tendermint",
+    name: "swift-tendermint",
     platforms: [
         .macOS(.v10_15),
     ],

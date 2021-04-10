@@ -1,11 +1,5 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jaap Wijnen on 09/03/2021.
-//
-
 import Foundation
+import ABCIMessages
 
 // Block defines the atomic unit of a Tendermint blockchain.
 public struct Block: Codable {

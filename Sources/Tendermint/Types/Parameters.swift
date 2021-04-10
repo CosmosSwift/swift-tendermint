@@ -1,4 +1,5 @@
 import Foundation
+import ABCIMessages
 
 // ConsensusParams contains consensus critical parameters that determine the
 // validity of blocks.

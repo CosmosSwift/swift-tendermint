@@ -15,4 +15,10 @@ public struct ErrorWrapper: Error, Codable {
         self.message = (try? container.decode(String.self, forKey: .message)) ?? "Unknown"
         self.data = (try? container.decode(String.self, forKey: .data)) ?? "Not able to decode"
     }
+    
+    public init(error: Error) {
+        self.code = -1
+        self.message = "Error created from `Error`"
+        self.data = "\(error.localizedDescription)"
+    }
 }
