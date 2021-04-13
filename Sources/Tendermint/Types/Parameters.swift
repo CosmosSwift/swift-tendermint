@@ -22,9 +22,9 @@ public struct ConsensusParameters: Codable {
 // BlockParams define limits on the block size and gas plus minimum time
 // between blocks.
 public struct BlockParameters: Codable {
-    public let maximumBytes: StringRepresentedInt<Int64>
-    public let maximumGas: StringRepresentedInt<Int64>
-    public let timeIotaMs: StringRepresentedInt<Int64>
+    @StringBackedInt public var maximumBytes: Int64
+    @StringBackedInt public var maximumGas: Int64
+    @StringBackedInt public var timeIotaMs: Int64
 
     private enum CodingKeys: String, CodingKey {
         case maximumBytes = "max_bytes"
@@ -36,9 +36,9 @@ public struct BlockParameters: Codable {
 // EvidenceParams determine how we handle evidence of malfeasance.
 public struct EvidenceParameters: Codable {
     // only accept new evidence more recent than this
-    public let maximumAgeNumberBlocks: StringRepresentedInt<Int64>
-    public let maximumAgeDuration: StringRepresentedInt<Int64>
-    public let maxBytes: StringRepresentedInt<Int64>
+    @StringBackedInt public var maximumAgeNumberBlocks: Int64
+    @StringBackedInt public var maximumAgeDuration: Int64
+    @StringBackedInt public var maxBytes: Int64
     
     private enum CodingKeys: String, CodingKey {
         case maximumAgeNumberBlocks = "max_age_num_blocks"
@@ -87,9 +87,9 @@ extension BlockParameters {
     // DefaultBlockParams returns a default BlockParams.
     static var `default`: BlockParameters {
         BlockParameters(
-            maximumBytes: StringRepresentedInt<Int64>(22020096), // 21MB
-            maximumGas: StringRepresentedInt<Int64>(-1),
-            timeIotaMs: StringRepresentedInt<Int64>(500)
+            maximumBytes: 22020096, // 21MB
+            maximumGas: -1,
+            timeIotaMs: 500
         )
     }
 }
@@ -145,9 +145,9 @@ extension EvidenceParameters {
     // DefaultEvidenceParams Params returns a default EvidenceParams.
     static var `default`: EvidenceParameters {
         EvidenceParameters(
-            maximumAgeNumberBlocks: StringRepresentedInt<Int64>(100000), // 27.8 hrs at 1block/s,
-            maximumAgeDuration: StringRepresentedInt<Int64>(Int64(Time.hour(48).rawValue)), // 48 hours
-            maxBytes: StringRepresentedInt<Int64>(1048576) // 1MB
+            maximumAgeNumberBlocks: 100000, // 27.8 hrs at 1block/s,
+            maximumAgeDuration: Int64(Time.hour(48).rawValue), // 48 hours
+            maxBytes: 1048576 // 1MB
         )
     }
 }
@@ -174,23 +174,23 @@ extension ConsensusParameters {
             let description: String
         }
         
-        if Int64(block.maximumBytes) <= 0 {
+        if block.maximumBytes <= 0 {
             throw ValidationError(description: "block.MaxBytes must be greater than 0. Got \(block.maximumBytes)")
         }
         
-        if Int64(block.maximumBytes) > Int64(Self.maximumBlockSizeBytes) {
+        if block.maximumBytes > Self.maximumBlockSizeBytes {
             throw ValidationError(description: "block.MaxBytes is too big. \(block.maximumBytes) > \(Self.maximumBlockSizeBytes)")
         }
 
-        if Int64(block.maximumGas) < -1 {
+        if block.maximumGas < -1 {
             throw ValidationError(description: "block.MaxGas must be greater or equal to -1. Got \(block.maximumGas)")
         }
 
-        if Int64(evidence.maximumAgeNumberBlocks) <= 0 {
+        if evidence.maximumAgeNumberBlocks <= 0 {
             throw ValidationError(description: "evidenceParams.MaxAgeNumBlocks must be greater than 0. Got \(evidence.maximumAgeNumberBlocks)")
         }
 
-        if Int64(evidence.maximumAgeDuration) <= 0 {
+        if evidence.maximumAgeDuration <= 0 {
             throw ValidationError(description: "evidenceParams.MaxAgeDuration must be grater than 0 if provided, Got \(evidence.maximumAgeDuration)")
         }
         
@@ -198,7 +198,7 @@ extension ConsensusParameters {
             throw ValidationError(description: "evidenceParams.maxBytesEvidence is greater than upper bound \(evidence.maxBytes) > \(block.maximumBytes)")
         }
         
-        if Int64(evidence.maxBytes) < 0 {
+        if evidence.maxBytes < 0 {
             throw ValidationError(description: "evidenceParams.MaxBytes must be non negative. Got: \(evidence.maxBytes)")
         }
 

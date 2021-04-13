@@ -310,7 +310,7 @@ struct RPCConfiguration: Codable {
     let timeoutBroadcastTransactionCommit: Time
 
     // Maximum size of request body, in bytes
-    let maximumBodyBytes: StringRepresentedInt<Int64>
+    @StringBackedInt var maximumBodyBytes: Int64
 
     // Maximum size of request header, in bytes
     let maximumHeaderBytes: Int
@@ -369,7 +369,7 @@ extension RPCConfiguration {
             maximumSubscriptionClients: 100,
             maximumSubscriptionsPerClient: 5,
             timeoutBroadcastTransactionCommit: .second(10),
-            maximumBodyBytes: StringRepresentedInt<Int64>(1000000), // 1MB
+            maximumBodyBytes: 1000000, // 1MB
             maximumHeaderBytes: 1 << 20, // same as the net/http default
             tlsCertificateFile: "",
             tlsKeyFile: ""
@@ -426,10 +426,10 @@ struct P2PConfiguration: Codable {
     let maximumPacketMessagePayloadSize: Int
 
     // Rate at which packets can be sent, in bytes/second
-    let sendRate: StringRepresentedInt<Int64>
+    let sendRate: Int64
 
     // Rate at which packets can be received, in bytes/second
-    let receiveRate: StringRepresentedInt<Int64>
+    let receiveRate: Int64
 
     // Set true to enable the peer-exchange reactor
     let peerExchangeReactor: Bool
@@ -505,8 +505,8 @@ extension P2PConfiguration {
             persistentPeersMaximumDialPeriod: .second(0),
             flushThrottleTimeout: .milliSecond(100),
             maximumPacketMessagePayloadSize: 1024, // 1 kB
-            sendRate: StringRepresentedInt<Int64>(5120000), // 5 mB/s
-            receiveRate: StringRepresentedInt<Int64>(5120000), // 5 mB/s
+            sendRate: 5120000, // 5 mB/s
+            receiveRate: 5120000, // 5 mB/s
             peerExchangeReactor: true,
             seedMode: false,
             privatePeerIDs: "",
@@ -565,7 +565,7 @@ struct MemoryPoolConfiguration: Codable {
     let broadcast: Bool
     let walPath: String
     let size: Int
-    let maximumTransactionsBytes: StringRepresentedInt<Int64>
+    let maximumTransactionsBytes: Int64
     let cacheSize: Int
     let maximumTransactionBytes: Int
     
@@ -592,7 +592,7 @@ extension MemoryPoolConfiguration {
             // Each signature verification takes .5ms, Size reduced until we implement
             // ABCI Recheck
             size: 5000,
-            maximumTransactionsBytes: StringRepresentedInt<Int64>(1024 * 1024 * 1024), // 1GB
+            maximumTransactionsBytes: 1024 * 1024 * 1024, // 1GB
             cacheSize: 10000,
             maximumTransactionBytes: 1024 * 1024 // 1MB
         )

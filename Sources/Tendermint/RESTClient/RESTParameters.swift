@@ -8,9 +8,9 @@ extension RequestQuery {
 }
 
 public struct RESTHeightParameters: Codable {
-    var height: Height?
+    @OptionalStringBackedInt var height: Int64?
     
-    public init(height: Height? = nil) {
+    public init(height: Int64? = nil) {
         self.height = height
     }
 }
@@ -22,10 +22,10 @@ public struct RESTBlockByHashParameters: Codable {
 }
 
 public struct RESTBlockchainInfoParameters: Codable {
-    var minHeight: Height
-    var maxHeight: Height
+    @StringBackedInt var minHeight: Int64
+    @StringBackedInt var maxHeight: Int64
     
-    public init(minHeight: Height, maxHeight: Height) {
+    public init(minHeight: Int64, maxHeight: Int64) {
         self.minHeight = minHeight
         self.maxHeight = maxHeight
     }
@@ -116,11 +116,11 @@ public struct RESTValidatorsParameters: Codable {
         case perPage = "per_page"
     }
     
-    var height: Height?
+    @OptionalStringBackedInt var height: Int64?
     let page: Never?
     let perPage: Int?
     
-    public init(height: Height?, page: Never?, perPage: Int?) {
+    public init(height: Int64?, page: Never?, perPage: Int?) {
         self.height = height
         self.page = page
         self.perPage = perPage
