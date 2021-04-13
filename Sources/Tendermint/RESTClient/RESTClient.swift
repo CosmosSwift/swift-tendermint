@@ -35,7 +35,7 @@ extension RESTClient {
         return self.sendRequest(payload: payload)
     }
     
-    public func abciQuery(parameters: RequestQuery<String>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
+    private func abciQuery(parameters: RequestQuery<String>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
         let payload = RESTRequest(id: id, method: .abciQuery, params: parameters)
         return self.sendRequest(payload: payload)
     }
@@ -55,7 +55,7 @@ extension RESTClient {
                     try queryResponse.map { base64Data -> ResponsePayload in
                         #warning("might have to do some base64 decoding here?")
                         let data = Data(base64Encoded: base64Data) ?? base64Data
-                        print(String(data: data, encoding: .utf8))
+                        print(String(data: data, encoding: .utf8) as Any)
                         return try jsonDecoder.decode(ResponsePayload.self, from: data)
                     }
                 }
@@ -231,7 +231,7 @@ extension RESTClient {
                         throw RESTRequestError.badResponse
                     }
                     let responseData = Data(byteBuffer.readableBytesView)
-                    print(String(data: responseData, encoding: .utf8))
+                    print(String(data: responseData, encoding: .utf8) as Any)
                     guard response.status == .ok else {
                         // decode some error for now throw error
                         //return self.client.eventLoopGroup.next().makeFailedFuture(jsonDecoder.decode(errorType, from: responseData))
