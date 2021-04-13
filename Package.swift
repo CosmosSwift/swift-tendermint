@@ -10,14 +10,13 @@ let package = Package(
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "Tendermint",
-            targets: ["Tendermint"]),
+        .library(name: "Tendermint", targets: ["Tendermint"]),
     ],
     dependencies: [
         .package(name: "swift-abci", url: "https://github.com/CosmosSwift/swift-abci", .branch("main")),
         .package(name: "swift-crypto", url: "https://github.com/apple/swift-crypto.git", .upToNextMajor(from: "1.0.0")),
         .package(name: "swift-argument-parser", url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "0.3.1")),
+        .package(name: "swift-nio", url: "https://github.com/apple/swift-nio", .upToNextMajor(from: "2.26.0")),
         .package(name: "async-http-client", url: "https://github.com/swift-server/async-http-client.git", .upToNextMajor(from: "1.0.0")),
     ],
     targets: [
