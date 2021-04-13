@@ -426,10 +426,10 @@ struct P2PConfiguration: Codable {
     let maximumPacketMessagePayloadSize: Int
 
     // Rate at which packets can be sent, in bytes/second
-    let sendRate: Int64
+    @StringBackedInt var sendRate: Int64
 
     // Rate at which packets can be received, in bytes/second
-    let receiveRate: Int64
+    @StringBackedInt var receiveRate: Int64
 
     // Set true to enable the peer-exchange reactor
     let peerExchangeReactor: Bool
@@ -565,7 +565,7 @@ struct MemoryPoolConfiguration: Codable {
     let broadcast: Bool
     let walPath: String
     let size: Int
-    let maximumTransactionsBytes: Int64
+    @StringBackedInt var maximumTransactionsBytes: Int64
     let cacheSize: Int
     let maximumTransactionBytes: Int
     
