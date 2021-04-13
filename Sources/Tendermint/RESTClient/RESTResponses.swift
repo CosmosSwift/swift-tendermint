@@ -29,7 +29,7 @@ public struct BlockchainInfoResponse: Codable {
         case blockMetas = "block_metas"
     }
     
-    public var lastHeight: Height
+    @StringBackedInt public var lastHeight: Int64
     public let blockMetas: [BlockMeta]
 }
 
@@ -43,7 +43,7 @@ public struct BlockResultsResponse: Codable {
         case consensusParameterUpdates = "consensus_param_updates"
     }
     
-    public var height: Height
+    @StringBackedInt public var height: Int64
     public let transactionResults: [ResponseDeliverTx]
     public let beginBlockEvents: [Event]
     public let endBlockEvents: [Event]
@@ -83,7 +83,7 @@ public struct BroadcastTransactionCommitResponse: Codable {
     public let checkTransaction: ResponseCheckTx
     public let deliverTransaction: ResponseDeliverTx
     public let hash: Data // bytes.HexBytes
-    public var height: Height
+    @StringBackedInt public var height: Int64
 }
 
 public struct CheckTransactionResponse: Codable {
@@ -116,7 +116,7 @@ public struct ConsensusParametersResponse: Codable {
         case consensusParameters = "consensus_params"
     }
     
-    public var blockHeight: Height
+    @StringBackedInt public var blockHeight: Int64
     public let consensusParameters: ConsensusParameters //types.ConsensusParams
 }
 
@@ -212,12 +212,12 @@ public struct StatusResponse<PublicKey: PublicKeyProtocol>: Codable {
         
         public let latestBlockHash: Data // bytes.HexBytes
         public let latestAppHash: Data // bytes.HexBytes
-        public var latestBlockHeight: Height
+        @StringBackedInt public var latestBlockHeight: Int64
         public let latestBlockTime: Date // time.Time
 
         public let earliestBlockHash: Data // bytes.HexBytes
         public let earliestAppHash: Data // bytes.HexBytes
-        public var earliestBlockHeight: Height
+        @StringBackedInt public var earliestBlockHeight: Int64
         public let earliestBlockTime: Date // time.Time
         
         public let catchingUp: Bool
@@ -233,7 +233,7 @@ public struct StatusResponse<PublicKey: PublicKeyProtocol>: Codable {
         
         public let address: Data // bytes.HexBytes
         public let pubKey: PublicKey // crypto.PubKey
-        public var votingPower: Height
+        @StringBackedInt public var votingPower: Int64
     }
 }
 
@@ -250,7 +250,7 @@ public struct TransactionResponse: Codable {
     }
     
     public let hash: Data // bytes.HexBytes
-    public var height: Height
+    @StringBackedInt public var height: Int64
     public let index: UInt32
     public let transactionResult: ResponseDeliverTx
     public let transaction: TransactionBytes // types.Tx
@@ -277,7 +277,7 @@ public struct UnconfirmedTransactionsResponse: Codable {
     
     public let count: Int
     public let total: Int
-    public var totalBytes: Height
+    @StringBackedInt public var totalBytes: Int64
     public let transactions: [TransactionBytes] // []types.Tx
 }
 
@@ -291,7 +291,7 @@ public struct ValidatorsResponse<PublicKey: PublicKeyProtocol>: Codable {
         case total
     }
     
-    public var blockHeight: Height
+    @StringBackedInt public var blockHeight: Int64
     public let validators: [Validator<PublicKey>]
     public let count: Int
     public let total: Int

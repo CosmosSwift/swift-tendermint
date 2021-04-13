@@ -30,7 +30,7 @@ public struct Block: Codable {
     public struct Header: Codable {
         public let version: Never
         public let chainID: String
-        public var height: Height
+        @StringBackedInt public var height: Int64
         public let time: Date
         
         public let lastBlockID: BlockID
@@ -90,7 +90,7 @@ public struct Block: Codable {
     // Commit contains the evidence that a block was committed by a set of validators.
     // NOTE: Commit is empty for height 1, but never nil.
     public struct Commit: Codable {
-        public var height: Height
+        @StringBackedInt public var height: Int64
         public let round: Int32
         public let blockID: Never
         public let signatures: [CommitSignature]

@@ -11,7 +11,7 @@ import ABCIMessages
 public struct GenesisValidator: Codable {
     var address: Address
     let publicKey: PublicKeyProtocol // TODO: should be an abstract PublicKey, but need to work out how to make it codable
-    let power: StringRepresentedInt<Int64>
+    @StringBackedInt var power: Int64
     let name: String
     
     private enum CodingKeys: String, CodingKey {
@@ -24,7 +24,7 @@ public struct GenesisValidator: Codable {
     public init(address: Address, publicKey: PublicKeyProtocol, power: Int64, name: String) {
         self.address = address
         self.publicKey = publicKey
-        self.power = StringRepresentedInt<Int64>(power)
+        self.power = power
         self.name = name
     }
     
@@ -39,7 +39,7 @@ public struct GenesisValidator: Codable {
                 debugDescription: "Invalid type for public key"
             )
         }
-
+        #warning("should leverage StringBackedInt propertywrapper here")
         let powerString = try container.decode(String.self, forKey: .power)
         let name = try container.decode(String.self, forKey: .name)
         
@@ -53,7 +53,7 @@ public struct GenesisValidator: Codable {
 
         self.address = address
         self.publicKey = publicKey
-        self.power = StringRepresentedInt<Int64>(power)
+        self.power = power
         self.name = name
     }
     
@@ -85,7 +85,7 @@ public struct GenesisDocument<AppState: Codable>: Codable {
     
     let genesisTime: Date
     public var chainID: String
-    var initialHeight: Height?// { get {nil} set(value) {}}
+    @OptionalStringBackedInt var initialHeight: Int64?// { get {nil} set(value) {}}
     var consensusParameters: ConsensusParameters? //{ get {nil} set(value) {}}
     public var validators: [GenesisValidator]? //{ get {nil} set(value) {}}
     var appHash: Data? //{ get {Data()} set(value) {}}
@@ -196,7 +196,7 @@ extension GenesisDocument {
     var validators = self.validators ?? []
 
         for (i, validator) in validators.enumerated() {
-            if Int64(validator.power) == 0 {
+            if validator.power == 0 {
                 throw ValidationError(description: "the genesis file cannot contain validators with no voting power: \(validator)")
             }
             
