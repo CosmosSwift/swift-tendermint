@@ -35,7 +35,7 @@ extension RESTClient {
         return self.sendRequest(payload: payload)
     }
     
-    public func abciQuery(parameters: RequestQuery<String>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
+    private func abciQuery(parameters: RequestQuery<String>, id: Int = RESTClient.nextId) -> EventLoopFuture<RESTResponse<ABCIQueryResponse<Data>>> {
         let payload = RESTRequest(id: id, method: .abciQuery, params: parameters)
         return self.sendRequest(payload: payload)
     }
