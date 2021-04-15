@@ -16,6 +16,12 @@ public struct RESTClient {
         self.client = httpClient
     }
     
+    #warning("improve by adding syncshutdown and an httpclient provider")
+    public init(url: String, eventLoopGroupProvider: HTTPClient.EventLoopGroupProvider) {
+        self.url = url
+        self.client = HTTPClient(eventLoopGroupProvider: eventLoopGroupProvider)
+    }
+    
     public static let jsonRpcVersion = "2.0"
     public static let httpClientType = "Swift ABCI Http client"
     
